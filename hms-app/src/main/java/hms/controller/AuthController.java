@@ -1,68 +1,50 @@
 package controller;
 
-import java.util.Scanner;
 import model.user.User;
 import services.AuthService;
+import view.LoginView;
+
 
 public class AuthController {
     
-    private static final Scanner sc = new Scanner(System.in);
     private static AuthService authService;
+    private static final LoginView loginView = new LoginView();
 
-    public static void Login() {
+    public User login() {
         authService = new AuthService();
         
-        int choice;
-        boolean authenticated = false;
+        boolean exit = false;
+        User authenticatedUser = null;
 
-        do {
-            while (true) {
-                System.out.println("<Enter 0 to shutdown system>\n");
-                System.out.println("1. Login");
-                // forget password option later
-
-                String input = sc.nextLine();
-
-                if (input.matches("[0-9]+")) { // If the input is an integer, proceed with the code
-                    choice = Integer.parseInt(input);
-
-                    if (choice < 0 || choice > 1) {
-                        System.out.println("Invalid input. Please enter 0-1!");
-                    } else {
-                        break;
-                    }
-                } else { // If the input is not an integer, prompt the user to enter again
-                    System.out.println("Invalid input. Please enter an integer.\n");
-                }
-
-            }
+        while (!exit) {
+            int choice = loginView.showLoginMenu();
 
             switch (choice) {
-                case 0:
-                    System.out.println("Shutting down HMS...");
-                    return;
-                case 1:
-                    if (authenticateUser()!=null) {
-                        authenticated = true;
-                        System.out.println("Welcome to the Hospital Management System!");
+                case 0 -> {
+                    loginView.displayMessage("\nShutting down HMS...");
+                    exit = true;
+                    break;
+                }
+                case 1 -> {
+                    authenticatedUser = authenticateUser();
+                    if (authenticatedUser!=null) {
+                        exit = true;
+                        loginView.displayMessage("\nWelcome " + authenticatedUser.getName() + "!");
                     } else {
-                        System.out.println("Authentication failed. Exiting...");
+                        loginView.displayMessage("Authentication failed. Please select a valid option...");
                     }
                     break;
+                }
+                default -> loginView.displayMessage("Invalid input. Please enter 0-1!");
             }
+        }
 
-        } while (!authenticated);
+        return authenticatedUser;
     }
 
-     private static User authenticateUser() {
-        Scanner scanner = new Scanner(System.in);
-
-        System.out.print("Enter username: ");
-        String username = scanner.nextLine();
-
-        System.out.print("Enter password: ");
-        String password = scanner.nextLine();
-
-        return authService.authenticate(username, password);
+    private User authenticateUser() {
+        String id = loginView.getInput("Enter hospitalID: ");
+        String password = loginView.getInput("Enter password: ");
+        return authService.authenticate(id, password);
     }
 }

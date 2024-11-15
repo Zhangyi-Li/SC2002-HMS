@@ -18,6 +18,13 @@ public class User {
         this.role = role;
     }
 
+    public User(User user){
+        this.hospitalID = user.getHospitalID();
+        this.name = user.getName();
+        this.password = user.getPassword();
+        this.role = user.getRole();
+    }
+
     // Getter method for name
     public String getName() {
         return name;
