@@ -9,13 +9,17 @@ public class User {
     private String hospitalID;
     private String password;
     private UserRole role;
+    private String gender;
+    private String email;
 
     // Constructor to initialize User object
-    public User(String hospitalID, String name, String password, String email, UserRole role) {
+    public User(String hospitalID, String name, String password, String email, UserRole role, String gender) {
         this.hospitalID = hospitalID;
         this.name = name;
         this.password = password;
+        this.email = email;
         this.role = role;
+        this.gender = gender;
     }
 
     public User(User user){
@@ -23,6 +27,7 @@ public class User {
         this.name = user.getName();
         this.password = user.getPassword();
         this.role = user.getRole();
+        this.gender = user.getGender();
     }
 
     // Getter method for name
@@ -44,4 +49,40 @@ public class User {
     public UserRole getRole() {
         return role;
     }
+    
+    // Getter method for gender
+    public String getGender() {
+        return gender;
+    }
+    
+    // Getter method for email
+    public String getEmail() {
+        return email;
+    }
+
+    // Setter for Name
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    // Setter for Password
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    // Setter for Email
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    // Setter for Role
+    public void setRole(UserRole role) {
+        this.role = role;
+    }
+
+    // Setter for Gender
+    public void setGender(String gender) {
+        this.gender = gender;
+    }
+
 }
