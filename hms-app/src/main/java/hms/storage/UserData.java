@@ -23,13 +23,14 @@ public class UserData implements IDataService<User> {
             br.readLine(); // Skip header line
             while ((line = br.readLine()) != null) {
                 String[] parts = line.split(",");
-                if (parts.length == 5) {
+                if (parts.length == 6) {
                     String hospitalID = parts[0].trim();
                     String name = parts[1].trim();
                     String password = parts[2].trim();
                     String email = parts[3].trim();
                     UserRole role = UserRole.valueOf(parts[4].trim());
-                    User user = new User(hospitalID, name, password, email, role);
+                    String gender = parts[5].trim();
+                    User user = new User(hospitalID, name, password, email, role, gender);
                     users.add(user);
                 }
             }
@@ -44,4 +45,3 @@ public class UserData implements IDataService<User> {
         return users;
     }
 }
-

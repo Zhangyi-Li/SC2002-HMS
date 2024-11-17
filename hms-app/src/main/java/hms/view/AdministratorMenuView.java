@@ -26,10 +26,12 @@ public class AdministratorMenuView {
 
                 if (scanner.hasNextInt()) {
                     choice = scanner.nextInt();
+                    System.out.println();
                     handleChoice(choice);
                 } else {
                     System.out.println("Invalid input. Please enter a number between 1 and 5.");
                     scanner.next(); // Clear invalid input
+                    System.out.println();
                 }
                 System.out.println();
                 
