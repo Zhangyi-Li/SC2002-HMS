@@ -69,7 +69,7 @@ public class Prescription {
         } catch (IOException e) {
             e.printStackTrace();
         } catch (NumberFormatException e) {
-            System.out.println("Invalid number format in CSV.");
+            System.out.println("Invalid number.");
         }
     }
 }
