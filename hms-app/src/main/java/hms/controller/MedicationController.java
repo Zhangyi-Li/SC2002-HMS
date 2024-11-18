@@ -1,10 +1,10 @@
 package controller;
 
-public class MedicationManager {
+public class MedicationContoller {
     private static final String FILE_PATH = "medications.csv";
     private List<Medication> medications;
 
-    public MedicationManager() {
+    public MedicationController() {
         medications = new ArrayList<>();
         loadMedications();
     }
