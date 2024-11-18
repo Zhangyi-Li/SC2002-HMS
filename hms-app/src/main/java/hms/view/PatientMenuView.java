@@ -52,6 +52,7 @@ public class PatientMenuView {
             case 6 -> controller.cancelAppointment();
             case 7 -> controller.viewScheduledAppointments();
             case 8 -> controller.viewPastAppointmentRecords();
+            case 9 -> System.out.println("");
             default -> System.out.println("Invalid choice. Please select a number between 1 and 9.");
         }
     }

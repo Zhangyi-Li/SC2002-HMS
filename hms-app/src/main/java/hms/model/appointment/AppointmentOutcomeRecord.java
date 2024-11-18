@@ -1,6 +1,7 @@
 package model.appointment;
 
 import java.util.List;
+import java.util.UUID;
 
 public class AppointmentOutcomeRecord {
     private String appointmentOutcomeRecordID;
@@ -16,6 +17,19 @@ public class AppointmentOutcomeRecord {
         this.serviceType = serviceType;
         this.medicationIDs = medicationIDs;
         this.notes = notes;
+    }
+    
+    public AppointmentOutcomeRecord(String appointmentID, String serviceType, List<String> medicationIDs, String notes) {
+        this.appointmentOutcomeRecordID = generateID();
+        this.appointmentID = appointmentID;
+        this.serviceType = serviceType;
+        this.medicationIDs = medicationIDs;
+        this.notes = notes;
+    }
+
+    // ID Generator
+    private static String generateID() {
+        return UUID.randomUUID().toString();
     }
 
     // Getters and Setters

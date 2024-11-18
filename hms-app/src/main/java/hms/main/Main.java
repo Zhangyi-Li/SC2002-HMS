@@ -22,7 +22,7 @@ public class Main {
 			AuthController authController = new AuthController();
 			User authenticatedUser = authController.login();
 
-			if(authenticatedUser != null){				
+			if(authenticatedUser != null){
 				switch (authenticatedUser.getRole().toString()) {
 					case "Patient" -> {
 						PatientMenuController controller = new PatientMenuController();
@@ -30,7 +30,7 @@ public class Main {
 						view.showMenu();
 					}
 					case "Doctor" -> {
-						DoctorMenuController controller = new DoctorMenuController();
+						DoctorMenuController controller = new DoctorMenuController(authenticatedUser);
 						DoctorMenuView view = new DoctorMenuView(controller);
 						view.showMenu();
 					}

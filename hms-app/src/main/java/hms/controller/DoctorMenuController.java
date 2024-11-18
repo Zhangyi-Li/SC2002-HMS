@@ -1,6 +1,28 @@
 package controller;
 
+import model.user.User;
+import services.AppointmentService;
+import storage.AppointmentData;
+import storage.AppointmentOutcomeRecordData;
+import storage.DoctorScheduleData;
+
 public class DoctorMenuController {
+    private static AppointmentService appointmentService = new AppointmentService();
+    private User authenticatedUser;
+    private AppointmentData appointmentData;
+    private AppointmentOutcomeRecordData appointmentOutcomeRecordData;
+    private DoctorScheduleData doctorAvailableSlotData;
+
+    public DoctorMenuController(User authenticatedUser) {
+        this.authenticatedUser = authenticatedUser;
+        this.appointmentData = new AppointmentData();
+        this.appointmentData.importData();
+        this.appointmentOutcomeRecordData = new AppointmentOutcomeRecordData();
+        this.appointmentOutcomeRecordData.importData();
+        this.doctorAvailableSlotData = new DoctorScheduleData();
+        this.doctorAvailableSlotData.importData();
+    }
+
     public void viewPatientRecords() {
         System.out.println("Viewing Patient Medical Records...");
         // Implement logic here
@@ -24,11 +46,15 @@ public class DoctorMenuController {
     public void manageAppointments() {
         System.out.println("Accepting or Declining Appointment Requests...");
         // Implement logic here
+
+        appointmentService.respondToAppointment(appointmentData, authenticatedUser);
     }
 
     public void viewUpcomingAppointments() {
         System.out.println("Viewing Upcoming Appointments...");
         // Implement logic here
+
+        appointmentService.viewUpcomingAppointment(appointmentData.getData(), authenticatedUser);
     }
 
     public void recordOutcome() {
