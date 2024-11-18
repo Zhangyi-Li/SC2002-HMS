@@ -15,8 +15,7 @@ public class PrescriptionMedication extends Medication {
     private int prescriptionID;
     private String medicationName;
     private int quantity;
-
-    // Constructor
+    
     public PrescriptionMedication(int prescriptionID, String medicationName, int quantity) {
         this.prescriptionID = prescriptionID;
         this.medicationName = medicationName;
