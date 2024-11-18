@@ -18,22 +18,13 @@ public class Prescription {
         this.prescriptionID = prescriptionID;
         this.prescriptionStatus = prescriptionStatus;
     }
-    public int getPrescriptionID() {
-        return prescriptionID;
-    }
-    public void setPrescriptionID(int prescriptionID) {
-        this.prescriptionID = prescriptionID;
-    }
-    public Status getPrescriptionStatus() {
-        return prescriptionStatus;
-    }
-    public void setPrescriptionStatus(Status prescriptionStatus) {
-        this.prescriptionStatus = prescriptionStatus;
-    }
-    public void updatePrescriptionStatus(Status newStatus) {
-        this.prescriptionStatus = newStatus;
-    }
-    public void storePrescriptionDetails(int prescriptionID, Status prescriptionStatus) {
+    public int getPrescriptionID() {return prescriptionID;}
+    public void setPrescriptionID(int prescriptionID) {this.prescriptionID = prescriptionID;}
+    
+    public Status getPrescriptionStatus() {return prescriptionStatus;}
+    public void setPrescriptionStatus(Status prescriptionStatus) {this.prescriptionStatus = prescriptionStatus;}
+    
+    public void updatePrescriptionStatus(int prescriptionID, Status prescriptionStatus) {
         this.prescriptionID = prescriptionID;
         this.prescriptionStatus = prescriptionStatus;
     }
