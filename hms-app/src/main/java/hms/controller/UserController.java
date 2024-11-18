@@ -1,8 +1,7 @@
-import java.io.*;
-import java.util.*;
+package controller;
 
 public class UserManager {
-    private static final String FILE_PATH = "users.csv";
+    // private static final String FILE_PATH = "users.csv";
     private List<User> userList;
 
     public UserManager() {
