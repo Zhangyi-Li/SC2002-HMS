@@ -1,5 +1,4 @@
-import java.io.*;
-import java.util.*;
+package controller;
 
 public class MedicationManager {
     private static final String FILE_PATH = "medications.csv";
