@@ -46,6 +46,7 @@ public class AdministratorMenuView {
             case 2 -> controller.viewAppointmentDetails();
             case 3 -> controller.viewAndManageInventory();
             case 4 -> controller.approveReplenishmentRequests();
+            case 5 -> System.out.println("");
             default -> System.out.println("Invalid choice. Please select a number between 1 and 5.");
         }
     }

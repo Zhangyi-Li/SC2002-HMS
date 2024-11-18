@@ -1,0 +1,3 @@
+AppointmentID,PatientID,DoctorID,AppointmentDate,AppointmentTime,AppointmentStatus,AppointmentOutcomeRecordID
+0001,H005,H002,2024-11-20,12:00,CONFIRMED,null
+0002,H005,H002,2024-11-21,18:00,CONFIRMED,null

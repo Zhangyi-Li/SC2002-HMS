@@ -50,6 +50,7 @@ public class DoctorMenuView {
             case 5 -> controller.manageAppointments();
             case 6 -> controller.viewUpcomingAppointments();
             case 7 -> controller.recordOutcome();
+            case 8 -> System.out.println("");
             default -> System.out.println("Invalid choice. Please select a number between 1 and 8.");
         }
     }

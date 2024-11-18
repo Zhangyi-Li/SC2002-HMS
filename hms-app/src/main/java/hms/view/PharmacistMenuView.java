@@ -44,6 +44,7 @@ public class PharmacistMenuView {
             case 2 -> controller.updatePrescriptionStatus();
             case 3 -> controller.viewMedicationInventory();
             case 4 -> controller.submitReplenishmentRequest();
+            case 5 -> System.out.println("");
             default -> System.out.println("Invalid choice. Please select a number between 1 and 5.");
         }
     }

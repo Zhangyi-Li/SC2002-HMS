@@ -1,6 +1,7 @@
 package model.appointment;
 
 import java.util.Date;
+import java.util.UUID;
 
 public class Appointment {
     private String appointmentID;
@@ -8,7 +9,7 @@ public class Appointment {
     private String doctorID;
     private Date appointmentDate;
     private String appointmentTime;
-    private String appointmentStatus;
+    private String appointmentStatus; // PENDING, CONFIRMED, COMPLETED, CANCELLED
     private String appointmentOutcomeRecordID;
 
     // Constructor
@@ -22,13 +23,24 @@ public class Appointment {
         this.appointmentOutcomeRecordID = appointmentOutcomeRecordID;
     }
 
+    public Appointment(String patientID, String doctorID, Date appointmentDate, String appointmentTime, String appointmentStatus, String appointmentOutcomeRecordID) {
+        this.appointmentID = generateID();
+        this.patientID = patientID;
+        this.doctorID = doctorID;
+        this.appointmentDate = appointmentDate;
+        this.appointmentTime = appointmentTime;
+        this.appointmentStatus = appointmentStatus;
+        this.appointmentOutcomeRecordID = appointmentOutcomeRecordID;
+    }
+
+    // ID Generator
+    private static String generateID() {
+        return UUID.randomUUID().toString();
+    }
+
     // Getters and Setters
     public String getAppointmentID() {
         return appointmentID;
-    }
-
-    public void setAppointmentID(String appointmentID) {
-        this.appointmentID = appointmentID;
     }
 
     public String getPatientID() {
@@ -77,6 +89,20 @@ public class Appointment {
 
     public void setAppointmentOutcomeRecordID(String appointmentOutcomeRecordID) {
         this.appointmentOutcomeRecordID = appointmentOutcomeRecordID;
+    }
+
+    // Method to update appointment status
+    public void updateStatus(String status) {
+        this.appointmentStatus = status;
+    }
+
+    public void display(){
+        System.out.println("Appointment ID: " + this.appointmentID);
+        System.out.println("Patient ID: " + this.patientID);
+        System.out.println("Date: " + this.appointmentDate);
+        System.out.println("Time: " + this.appointmentTime);
+        System.out.println("Status: " + this.appointmentStatus);
+        System.out.println();
     }
 
 }
