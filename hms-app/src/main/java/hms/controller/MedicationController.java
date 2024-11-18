@@ -1,7 +1,7 @@
 package controller;
 
 public class MedicationContoller {
-    private static final String FILE_PATH = "medications.csv";
+    // private static final String FILE_PATH = "medications.csv";
     private List<Medication> medications;
 
     public MedicationController() {
