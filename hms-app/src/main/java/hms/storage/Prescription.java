@@ -11,48 +11,38 @@ import java.util.List;
 import model.user.User;
 
 public class Prescription {
-    // Private member variables
     private int prescriptionID;
     private String prescriptionStatus;
-
-    // Constructor
     public Prescription(int prescriptionID, String prescriptionStatus) {
         this.prescriptionID = prescriptionID;
         this.prescriptionStatus = prescriptionStatus;
     }
 
-    // Getter for prescriptionID
     public int getPrescriptionID() {
         return prescriptionID;
     }
 
-    // Setter for prescriptionID
     public void setPrescriptionID(int prescriptionID) {
         this.prescriptionID = prescriptionID;
     }
 
-    // Getter for prescriptionStatus
     public String getPrescriptionStatus() {
         return prescriptionStatus;
     }
 
-    // Setter for prescriptionStatus
     public void setPrescriptionStatus(String prescriptionStatus) {
         this.prescriptionStatus = prescriptionStatus;
     }
 
-    // Method to update prescription status
     public void updatePrescriptionStatus(String newStatus) {
         this.prescriptionStatus = newStatus;
     }
 
-    // Method to store prescription ID and status
     public void storePrescriptionDetails(int prescriptionID, String prescriptionStatus) {
         this.prescriptionID = prescriptionID;
         this.prescriptionStatus = prescriptionStatus;
     }
 
-    // Method to read prescriptions from a CSV file
     public static void readPrescriptionsFromCSV(String filePath) {
         String line;
         try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
@@ -73,4 +63,3 @@ public class Prescription {
         }
     }
 }
-
