@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 import model.appointment.Appointment;
 import model.user.User;
-import storage.AppointmentData;
+import storage.AppointmentStorage;
 
 public class AppointmentService {
 
@@ -31,8 +31,8 @@ public class AppointmentService {
         return pendingAppointments.size();
     }
 
-    public void respondToAppointment(AppointmentData appointmentData, User user) {
-        List<Appointment> appointments = appointmentData.getData();
+    public void respondToAppointment(AppointmentStorage appointmentStorage, User user) {
+        List<Appointment> appointments = appointmentStorage.getData();
         int index = viewPendingAppointment(appointments, user);
         if (index == 0) {
             System.out.println("No pending appointments.");
@@ -61,12 +61,12 @@ public class AppointmentService {
                 switch (response) {
                     case 0 -> {
                         appointment.setAppointmentStatus("CONFIRMED");
-                        appointmentData.updateAppointment(appointment);
+                        appointmentStorage.updateAppointment(appointment);
                         System.out.println("Appointment confirmed.");
                     }
                     case 1 -> {
                         appointment.setAppointmentStatus("REJECTED");
-                        appointmentData.updateAppointment(appointment);
+                        appointmentStorage.updateAppointment(appointment);
                         System.out.println("Appointment rejected.");
                     }
                     case 2 -> System.out.println("");

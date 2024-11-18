@@ -9,11 +9,11 @@ import java.util.ArrayList;
 import java.util.List;
 import model.appointment.DoctorSchedule;
 
-public class DoctorScheduleData implements IDataService<DoctorSchedule> {
+public class DoctorScheduleStorage implements IDataService<DoctorSchedule> {
     private List<DoctorSchedule> availableSlots;
     private static final String AVAILABLE_SLOTS_FILE_PATH = "hms-app/src/main/resources/data/doctorSchedule.csv";
 
-    public DoctorScheduleData() {
+    public DoctorScheduleStorage() {
         this.availableSlots = new ArrayList<>();
     }
 
