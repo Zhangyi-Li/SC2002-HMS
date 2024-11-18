@@ -1,10 +1,10 @@
 package controller;
 
-public class UserManager {
+public class UserController {
     // private static final String FILE_PATH = "users.csv";
     private List<User> userList;
 
-    public UserManager() {
+    public UserController() {
         userList = new ArrayList<>();
         loadUser();
     }
