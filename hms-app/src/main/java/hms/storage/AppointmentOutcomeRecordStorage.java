@@ -10,11 +10,11 @@ import java.util.Arrays;
 import java.util.List;
 import model.appointment.AppointmentOutcomeRecord;
 
-public class AppointmentOutcomeRecordData implements IDataService<AppointmentOutcomeRecord>{
+public class AppointmentOutcomeRecordStorage implements IDataService<AppointmentOutcomeRecord>{
     private List<AppointmentOutcomeRecord> appointmentOutcomeRecords;
     private static final String APPOINTMENT_OUTCOME_RECORDS_FILE_PATH = "hms-app/src/main/resources/data/appointmentOutcomeRecords.csv";
 
-    public AppointmentOutcomeRecordData() {
+    public AppointmentOutcomeRecordStorage() {
         this.appointmentOutcomeRecords = new ArrayList<>();
     }
 

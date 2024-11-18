@@ -12,12 +12,12 @@ import java.util.Date;
 import java.util.List;
 import model.appointment.Appointment;
 
-public class AppointmentData implements IDataService<Appointment> {
+public class AppointmentStorage implements IDataService<Appointment> {
     private List<Appointment> appointments;
     private static final String APPOINTMENTS_FILE_PATH = "hms-app/src/main/resources/data/appointments.csv";
     private final String absolutePath = Paths.get(APPOINTMENTS_FILE_PATH).toAbsolutePath().toString();
 
-    public AppointmentData() {
+    public AppointmentStorage() {
         this.appointments = new ArrayList<>();
     }
 

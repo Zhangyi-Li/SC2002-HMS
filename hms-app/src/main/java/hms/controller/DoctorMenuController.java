@@ -2,25 +2,25 @@ package controller;
 
 import model.user.User;
 import services.AppointmentService;
-import storage.AppointmentData;
-import storage.AppointmentOutcomeRecordData;
-import storage.DoctorScheduleData;
+import storage.AppointmentOutcomeRecordStorage;
+import storage.AppointmentStorage;
+import storage.DoctorScheduleStorage;
 
 public class DoctorMenuController {
     private static AppointmentService appointmentService = new AppointmentService();
     private User authenticatedUser;
-    private AppointmentData appointmentData;
-    private AppointmentOutcomeRecordData appointmentOutcomeRecordData;
-    private DoctorScheduleData doctorAvailableSlotData;
+    private AppointmentStorage appointmentStorage;
+    private AppointmentOutcomeRecordStorage appointmentOutcomeRecordStorage;
+    private DoctorScheduleStorage doctorAvailableSlotStorage;
 
     public DoctorMenuController(User authenticatedUser) {
         this.authenticatedUser = authenticatedUser;
-        this.appointmentData = new AppointmentData();
-        this.appointmentData.importData();
-        this.appointmentOutcomeRecordData = new AppointmentOutcomeRecordData();
-        this.appointmentOutcomeRecordData.importData();
-        this.doctorAvailableSlotData = new DoctorScheduleData();
-        this.doctorAvailableSlotData.importData();
+        this.appointmentStorage = new AppointmentStorage();
+        this.appointmentStorage.importData();
+        this.appointmentOutcomeRecordStorage = new AppointmentOutcomeRecordStorage();
+        this.appointmentOutcomeRecordStorage.importData();
+        this.doctorAvailableSlotStorage = new DoctorScheduleStorage();
+        this.doctorAvailableSlotStorage.importData();
     }
 
     public void viewPatientRecords() {
@@ -47,14 +47,14 @@ public class DoctorMenuController {
         System.out.println("Accepting or Declining Appointment Requests...");
         // Implement logic here
 
-        appointmentService.respondToAppointment(appointmentData, authenticatedUser);
+        appointmentService.respondToAppointment(appointmentStorage, authenticatedUser);
     }
 
     public void viewUpcomingAppointments() {
         System.out.println("Viewing Upcoming Appointments...");
         // Implement logic here
 
-        appointmentService.viewUpcomingAppointment(appointmentData.getData(), authenticatedUser);
+        appointmentService.viewUpcomingAppointment(appointmentStorage.getData(), authenticatedUser);
     }
 
     public void recordOutcome() {

@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 import model.user.User;
 
-public class UserData implements IDataService<User> {
+public class UserStorage implements IDataService<User> {
     private static final String USERS_FILE_PATH = "hms-app/src/main/resources/data/users.csv";
     private static List<User> users = new ArrayList<>();
 
