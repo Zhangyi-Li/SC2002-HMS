@@ -12,9 +12,9 @@ import java.util.Date;
 import java.util.List;
 import storage.Medication;
 
-public class MedicationContoller {
+public class MedicationController {
     // private static final String FILE_PATH = "medications.csv";
-    private static final String MEDICATIONS_FILE_PATH = "hms-app/src/main/resources/data/appointments.csv";
+    private static final String MEDICATIONS_FILE_PATH = "hms-app/src/main/resources/data/medications.csv";
     private final String FILE_PATH = Paths.get(MEDICATIONS_FILE_PATH).toAbsolutePath().toString();
     private List<Medication> medications;
 
