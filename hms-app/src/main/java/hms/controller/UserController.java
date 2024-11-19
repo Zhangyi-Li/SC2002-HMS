@@ -2,6 +2,8 @@ package controller;
 
 public class UserController {
     // private static final String FILE_PATH = "users.csv";
+    private static final String USERS_FILE_PATH = "hms-app/src/main/resources/data/users.csv";
+    private final String FILE_PATH = Paths.get(USERS_FILE_PATH).toAbsolutePath().toString();
     private List<User> userList;
 
     public UserController() {
