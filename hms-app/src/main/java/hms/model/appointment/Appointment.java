@@ -9,7 +9,7 @@ public class Appointment {
     private String doctorID;
     private Date appointmentDate;
     private String appointmentTime;
-    private String appointmentStatus; // PENDING, CONFIRMED, COMPLETED, CANCELLED
+    private String appointmentStatus; // PENDING, CONFIRMED, COMPLETED, CANCELLED, REJECTED
     private String appointmentOutcomeRecordID;
 
     // Constructor
