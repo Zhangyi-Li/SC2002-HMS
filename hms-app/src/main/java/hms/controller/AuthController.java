@@ -33,6 +33,16 @@ public class AuthController {
         authService = new AuthService(); // Initialize the authentication service
         boolean exit = false; // Flag to determine when to exit the loop
         User authenticatedUser = null; // Holds the authenticated user
+        
+        // Load patient data
+        PatientStorage patientStorage = new PatientStorage();
+        patientStorage.importData();
+        List<User> patients = new ArrayList<>(patientStorage.getData());
+        
+        // Load staff data
+        StaffStorage staffStorage = new StaffStorage();
+        staffStorage.importData();
+        List<User> staffs = new ArrayList<>(staffStorage.getData());
 
         // Main loop for login, registration, and password reset
         while (!exit) {
@@ -54,10 +64,6 @@ public class AuthController {
                             break;
                         }
                         case 1 -> {
-                            // Load patient data
-                            PatientStorage patientStorage = new PatientStorage();
-                            patientStorage.importData();
-                            List<User> patients = new ArrayList<>(patientStorage.getData());
 
                             authenticatedUser = authenticateUser(patients);
                                     
@@ -69,11 +75,6 @@ public class AuthController {
                             }
                         }
                         case 2 -> {
-                            // Load staff data
-                            StaffStorage staffStorage = new StaffStorage();
-                            staffStorage.importData();
-                            List<User> staffs = new ArrayList<>(staffStorage.getData());
-
                             authenticatedUser = authenticateUser(staffs);
                             
                             if (authenticatedUser != null) {
