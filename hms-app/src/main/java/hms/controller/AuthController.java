@@ -1,12 +1,15 @@
 package controller;
 
 // Import necessary classes
-import java.util.List; // For handling lists
-import model.user.User; // For handling user-related logic
-import services.AuthService; // For authentication services
-import services.RegisterNewPatient; // For handling new patient registration
-import services.ResetPassword; // Import the resetPassword service class
-import view.LoginView; // For displaying login-related views
+import java.util.ArrayList; // For handling lists
+import java.util.List; // For handling array lists
+import model.user.User;
+import services.AuthService; // For handling user-related logic
+import services.RegisterNewPatient; // For authentication services
+import services.ResetPassword; // For handling new patient registration
+import storage.PatientStorage; // Import the resetPassword service class
+import storage.StaffStorage; // For displaying login-related views
+import view.LoginView; // Import the StaffStorage class
 
 /**
  * Controller class to handle authentication, registration, and password reset.
@@ -17,10 +20,8 @@ public class AuthController {
     private static final LoginView loginView = new LoginView(); // Instance of LoginView for user interaction
     private static final RegisterNewPatient registerService = new RegisterNewPatient(); // Instance of RegisterNewPatient for registration
     private static final ResetPassword resetPasswordService = new ResetPassword(); // Instance of ResetPassword for password reset
-    private final List<User> users; // List of users
 
-    public AuthController(List<User> users) {
-        this.users = users;
+    public AuthController() {
     }
 
     /**
@@ -45,12 +46,43 @@ public class AuthController {
                 }
                 case 1 -> {
                     // Handle login choice
-                    authenticatedUser = authenticateUser();
-                    if (authenticatedUser != null) {
-                        exit = true; // Exit loop if login is successful
-                        loginView.displayMessage("\nWelcome " + authenticatedUser.getName() + "!");
-                    } else {
-                        loginView.displayMessage("Authentication failed. Please try again...");
+                    
+                    int loginTypeChoice = loginView.showUserTypeMenu(); // Display the user type menu and get user choice
+                    switch (loginTypeChoice) {
+                        case 0 -> {
+                            // Go back to the main menu
+                            break;
+                        }
+                        case 1 -> {
+                            // Load patient data
+                            PatientStorage patientStorage = new PatientStorage();
+                            patientStorage.importData();
+                            List<User> patients = new ArrayList<>(patientStorage.getData());
+
+                            authenticatedUser = authenticateUser(patients);
+                                    
+                            if (authenticatedUser != null) {
+                                exit = true; // Exit loop if login is successful
+                                loginView.displayMessage("\nWelcome " + authenticatedUser.getName() + "!");
+                            } else {
+                                loginView.displayMessage("Authentication failed. Please try again...");
+                            }
+                        }
+                        case 2 -> {
+                            // Load staff data
+                            StaffStorage staffStorage = new StaffStorage();
+                            staffStorage.importData();
+                            List<User> staffs = new ArrayList<>(staffStorage.getData());
+
+                            authenticatedUser = authenticateUser(staffs);
+                            
+                            if (authenticatedUser != null) {
+                                exit = true; // Exit loop if login is successful
+                                loginView.displayMessage("\nWelcome " + authenticatedUser.getName() + "!");
+                            } else {
+                                loginView.displayMessage("Authentication failed. Please try again...");
+                            }
+                        }
                     }
                 }
                 case 2 -> {
@@ -76,9 +108,9 @@ public class AuthController {
      *
      * @return Authenticated User object if successful, or null otherwise.
      */
-    private User authenticateUser() {
+    private User authenticateUser(List<User> users) {
         String id = loginView.getInput("Enter hospitalID: "); // Prompt for Hospital ID
         String password = loginView.getInput("Enter password: "); // Prompt for password
-        return authService.authenticate(this.users, id, password); // Authenticate user using AuthService
+        return authService.authenticate(users, id, password); // Authenticate user using AuthService
     }
 }
