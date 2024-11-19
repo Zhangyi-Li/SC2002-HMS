@@ -1,11 +1,10 @@
 package controller;
 
-import services.AdminService;
+import enums.UserRole;
 import java.util.Scanner;
-//import java.util.List;
-//import enums.UserRole;
+import services.AdminService;
+import storage.Medication;
 //import model.user.User;
-//import storage.UserData;
 
 public class AdministratorMenuController {
 
@@ -44,16 +43,21 @@ public class AdministratorMenuController {
                         String email = scanner.next();
                     
                         System.out.println("Select Role:");
-                        System.out.println("1. Administrator");
-                        System.out.println("2. Doctor");
-                        System.out.println("3. Pharmacist");
+                        System.out.println("1. Doctor");
+                        System.out.println("2. Pharmacist");
+                        System.out.println("3. Administrator");
                         System.out.print("Enter your choice (1-3): ");
                         int roleChoice = scanner.nextInt();
-                    
+                        UserRole role = UserRole.values()[roleChoice];
+
                         System.out.print("Enter Gender: ");
                         String gender = scanner.next();
+                        
+                        System.out.print("Enter age: ");
+                        int age = scanner.nextInt();
+
                     
-                        service.addStaff(hospitalID, name, email, roleChoice, gender);
+                        service.addStaff(hospitalID, name, role, gender, age);
                         System.out.println();
                     }
                     case 3 -> {
@@ -61,26 +65,29 @@ public class AdministratorMenuController {
                         String hospitalID = scanner.next();
                         System.out.print("Enter New Name: ");
                         String newName = scanner.next();
-                        System.out.print("Enter New Email: ");
-                        String newEmail = scanner.next();
 
                         System.out.println("Select New Role:");
-                        System.out.println("1. Administrator");
-                        System.out.println("2. Doctor");
-                        System.out.println("3. Pharmacist");
+                        System.out.println("1. Doctor");
+                        System.out.println("2. Pharmacist");
+                        System.out.println("3. Administrator");
                         System.out.print("Enter your choice (1-3): ");
                         int roleChoice = scanner.nextInt();
+                        UserRole role = UserRole.values()[roleChoice];
 
                         System.out.print("Enter New Gender: ");
                         String newGender = scanner.next();
+
+                        System.out.print("Enter age: ");
+                        int age = scanner.nextInt();
+
                     
-                        service.modifyStaff(hospitalID, newName, newEmail, roleChoice, newGender);
+                        service.updateStaff(hospitalID, newName, newGender, age, role);
                         System.out.println();
                     }
                     case 4 -> {
                         System.out.print("Enter Hospital ID of staff to remove: ");
                         String hospitalID = scanner.next();
-                        service.deleteStaff(hospitalID);
+                        service.removeStaff(hospitalID);
                         System.out.println();
                     }
                     default -> System.out.println("Invalid choice. Please select a number between 1 and 5.");

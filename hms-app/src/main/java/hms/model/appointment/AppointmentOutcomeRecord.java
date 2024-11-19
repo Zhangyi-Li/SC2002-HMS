@@ -9,7 +9,8 @@ public class AppointmentOutcomeRecord {
     private String serviceType;
     private List<String> medicationIDs;
     private String notes;
-
+    public AppointmentOutcomeRecord() {
+    }
     // Constructor
     public AppointmentOutcomeRecord(String appointmentOutcomeRecordID, String appointmentID, String serviceType, List<String> medicationIDs, String notes) {
         this.appointmentOutcomeRecordID = appointmentOutcomeRecordID;
@@ -72,4 +73,5 @@ public class AppointmentOutcomeRecord {
     public void setNotes(String notes) {
         this.notes = notes;
     }
+
 }

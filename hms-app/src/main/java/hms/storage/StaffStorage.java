@@ -98,6 +98,32 @@ public class StaffStorage {
         saveToFile(); // Persist changes to the CSV file
     }
 
+    // Method to update an existing staff
+    public static void updateStaff(Staff staff) {
+        Staff existingStaff = staffs.stream()
+                .filter(s -> s.getHospitalID().equals(staff.getHospitalID()))
+                .findFirst()
+                .orElse(null); // Return null if no match is found
+
+        if (existingStaff != null) {
+            existingStaff.setName(staff.getName());
+            existingStaff.setRole(staff.getRole());
+            existingStaff.setGender(staff.getGender());
+            existingStaff.setAge(staff.getAge());
+            saveToFile(); // Persist changes to the CSV file
+            System.out.println("Staff updated successfully!");
+        } else {
+            System.out.println("Staff not found.");
+        }
+    }
+
+    // Method to remove a staff
+    public static void removeStaff(Staff staff) {
+        staffs.remove(staff); // Remove staff from in-memory list
+        saveToFile(); // Persist changes to the CSV file
+        System.out.println("Staff removed successfully!");
+    }
+
     // Helper method to persist staffs to the CSV file
     private static void saveToFile() {
         String absolutePath = Paths.get(STAFF_FILE_PATH).toAbsolutePath().toString();

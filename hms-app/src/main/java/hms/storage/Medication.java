@@ -1,15 +1,5 @@
 package storage;
 
-import enums.UserRole;
-import interfaces.IDataService;
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
-import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.List;
-import model.user.User;
-
 public class Medication {
     private String medicationID;
     private String medicationName;
@@ -17,6 +7,7 @@ public class Medication {
     private double medicationCost;
     private String medicationDescription;
 
+    public Medication() {}
     public Medication(String medicationID, String medicationName, String medicationCompany, double medicationCost, String medicationDescription) {
         this.medicationID = medicationID;
         this.medicationName = medicationName;
