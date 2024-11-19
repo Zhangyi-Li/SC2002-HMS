@@ -97,6 +97,64 @@ public class AdministratorMenuController {
     public void viewAndManageInventory() {
         System.out.println("Viewing and Managing Medication Inventory...");
         // Implement logic here
+        MedicationController medicationController = new MedicationController();
+        Scanner scanner = new Scanner(System.in);
+
+        while (true) {
+            System.out.println("\nMedication Management System:");
+            System.out.println("1. Add Medication");
+            System.out.println("2. Update Medication");
+            System.out.println("3. Display Medications");
+            System.out.println("4. Exit");
+            System.out.print("Choose an option: ");
+            int choice = scanner.nextInt();
+            scanner.nextLine(); // Consume newline
+
+            switch (choice) {
+                case 1:
+                    System.out.print("Enter Medication ID: ");
+                    String id = scanner.nextLine();
+                    System.out.print("Enter Medication Name: ");
+                    String name = scanner.nextLine();
+                    System.out.print("Enter Medication Company: ");
+                    String company = scanner.nextLine();
+                    System.out.print("Enter Medication Cost: ");
+                    double cost = scanner.nextDouble();
+                    scanner.nextLine(); // Consume newline
+                    System.out.print("Enter Medication Description: ");
+                    String description = scanner.nextLine();
+                    Medication newMed = new Medication(id, name, company, cost, description);
+                    medicationController.addMedication(newMed);
+                    break;
+
+                case 2:
+                    System.out.print("Enter Medication ID to update: ");
+                    String updateID = scanner.nextLine();
+                    System.out.print("Enter New Medication Name: ");
+                    String updateName = scanner.nextLine();
+                    System.out.print("Enter New Medication Company: ");
+                    String updateCompany = scanner.nextLine();
+                    System.out.print("Enter New Medication Cost: ");
+                    double updateCost = scanner.nextDouble();
+                    scanner.nextLine(); // Consume newline
+                    System.out.print("Enter New Medication Description: ");
+                    String updateDescription = scanner.nextLine();
+                    medicationController.updateMedication(updateID, updateName, updateCompany, updateCost, updateDescription);
+                    break;
+
+                case 3:
+                    medicationController.displayMedications();
+                    break;
+
+                case 4:
+                    System.out.println("Exiting Medication Management System.");
+                    return;
+
+                default:
+                    System.out.println("Invalid option. Please try again.");
+                    break;
+            }
+        }
     }
 
     public void approveReplenishmentRequests() {
