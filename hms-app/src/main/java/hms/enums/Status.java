@@ -1,4 +1,4 @@
-pakage enums;
+package enums;
   
 public enum Status {
         PENDING, DISPENSE

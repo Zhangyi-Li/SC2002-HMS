@@ -5,6 +5,7 @@ import enums.UserRole;
 public class Staff extends User {
     private int age;
     
+    public Staff(){}
 
     public Staff( String hospitalID, String name, String password, UserRole role, String gender, int age) {
         super(hospitalID, name, password, role, gender);

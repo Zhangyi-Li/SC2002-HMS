@@ -11,6 +11,9 @@ public class User {
     private UserRole role;
     private String gender;
 
+    // Default constructor
+    public User() {
+    }
 
     // Constructor to initialize User object
     public User(String hospitalID, String name, String password, UserRole role, String gender) {
@@ -74,5 +77,6 @@ public class User {
     public void setGender(String gender) {
         this.gender = gender;
     }
+    
 
 }
