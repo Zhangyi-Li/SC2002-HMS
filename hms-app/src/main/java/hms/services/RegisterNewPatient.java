@@ -44,13 +44,13 @@ public class RegisterNewPatient {
                      return input.contains("@") || input.equalsIgnoreCase("NA");
                   }, "Invalid email format. Please enter a valid email or 'NA'.");
                   if (email != null) {
-                     if (UserStorage.isDuplicateRecord(fullName, dateOfBirth, gender)) {
+                     if (UserStorage.isDuplicateRecord(fullName, gender)) {
                         System.out.println("The user is already registered. Returning to the main menu...");
                      } else {
                         String hospitalId = UserStorage.generateHospitalId();
                         String defaultPassword = "password";
                         Date dob = java.sql.Date.valueOf(dateOfBirth);
-                        User newUser = new User(hospitalId, fullName, defaultPassword, email, UserRole.Patient, gender, dob, bloodType);
+                        User newUser = new User(hospitalId, fullName, defaultPassword, UserRole.Patient, gender);
                         UserStorage.saveUser(newUser);
                         System.out.println("Registration successful!");
                         System.out.println("Your Hospital ID: " + hospitalId);

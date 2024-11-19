@@ -2,10 +2,10 @@ package model.user;
 
 import enums.UserRole;
 
-public class Pharmacist extends User {
+public class Pharmacist extends Staff {
 
-    public Pharmacist( String hospitalID, String name, String password, String email, String gender) {
-        super(hospitalID, name, password, email, UserRole.Pharmacist, gender);
+    public Pharmacist( String hospitalID, String name, String password, String gender, int age) {
+        super(hospitalID, name, password, UserRole.Pharmacist, gender, age);
     }
     
 }

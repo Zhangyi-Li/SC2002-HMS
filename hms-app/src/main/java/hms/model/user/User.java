@@ -1,7 +1,6 @@
 package model.user; // Package declaration
 
 import enums.UserRole; // Importing UserRole enum
-import java.util.Date; 
 
 // User class definition
 public class User {
@@ -11,30 +10,15 @@ public class User {
     private String password;
     private UserRole role;
     private String gender;
-    private String email;
-    private Date dob;
-    private String bloodType;
 
 
     // Constructor to initialize User object
-    public User(String hospitalID, String name, String password, String email, UserRole role, String gender) {
+    public User(String hospitalID, String name, String password, UserRole role, String gender) {
         this.hospitalID = hospitalID;
         this.name = name;
         this.password = password;
-        this.email = email;
         this.role = role;
         this.gender = gender;
-    }
-
-    public User(String hospitalID, String name, String password, String email, UserRole role, String gender, Date dob, String bloodType) {
-        this.hospitalID = hospitalID;
-        this.name = name;
-        this.password = password;
-        this.email = email;
-        this.role = role;
-        this.gender = gender;
-        this.dob = dob;
-        this.bloodType = bloodType;
     }
 
     public User(User user){
@@ -43,9 +27,6 @@ public class User {
         this.password = user.getPassword();
         this.role = user.getRole();
         this.gender = user.getGender();
-        this.email = user.getEmail();
-        this.dob = user.getDob();
-        this.bloodType = user.getBloodType();
     }
 
     // Getter method for name
@@ -73,20 +54,6 @@ public class User {
         return gender;
     }
     
-    // Getter method for email
-    public String getEmail() {
-        return email;
-    }
-
-    // Getter for Date of Birth
-    public Date getDob() {
-        return dob;
-    }
-
-    // Getter for Blood Type
-    public String getBloodType() {
-        return bloodType;
-    }
 
     // Setter for Name
     public void setName(String name) {
@@ -98,11 +65,6 @@ public class User {
         this.password = password;
     }
 
-    // Setter for Email
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
     // Setter for Role
     public void setRole(UserRole role) {
         this.role = role;
@@ -111,16 +73,6 @@ public class User {
     // Setter for Gender
     public void setGender(String gender) {
         this.gender = gender;
-    }
-
-    // Setter for Date of Birth
-    public void setDob(Date dob) {
-        this.dob = dob;
-    }
-
-    // Setter for Blood Type
-    public void setBloodType(String bloodType) {
-        this.bloodType = bloodType;
     }
 
 }

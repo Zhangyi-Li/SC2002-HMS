@@ -2,10 +2,10 @@ package model.user;
 
 import enums.UserRole;
 
-public class Administrator extends User {
+public class Administrator extends Staff {
 
-    public Administrator( String hospitalID, String name, String password, String email, String gender) {
-        super(hospitalID, name, password, email, UserRole.Administrator, gender);
+    public Administrator( String hospitalID, String name, String password, String gender, int age) {
+        super(hospitalID, name, password, UserRole.Administrator, gender, age);
     }
     
 }

@@ -6,7 +6,6 @@ import controller.DoctorMenuController;
 import controller.PatientMenuController;
 import controller.PharmacistMenuController;
 import model.user.User;
-import storage.UserStorage;
 import view.AdministratorMenuView;
 import view.DoctorMenuView;
 import view.PatientMenuView;
@@ -17,9 +16,7 @@ public class Main {
 	public static void main(String[] args) {
 		try {
 
-            UserStorage userData = new UserStorage();
-            userData.importData();
-			AuthController authController = new AuthController(userData.getData());
+			AuthController authController = new AuthController();
 			User authenticatedUser = authController.login();
 
 			if(authenticatedUser != null){
