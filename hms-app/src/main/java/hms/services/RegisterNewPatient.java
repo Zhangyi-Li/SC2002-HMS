@@ -1,12 +1,11 @@
 package services;
 
-import enums.UserRole;
 import java.sql.Date;
 import java.util.Scanner;
 import java.util.function.Predicate;
 import java.util.regex.Pattern;
-import model.user.User;
-import storage.UserStorage;
+import model.user.Patient;
+import storage.PatientStorage;
 
 public class RegisterNewPatient {
    private static final int MAX_ATTEMPTS = 3;
@@ -44,14 +43,14 @@ public class RegisterNewPatient {
                      return input.contains("@") || input.equalsIgnoreCase("NA");
                   }, "Invalid email format. Please enter a valid email or 'NA'.");
                   if (email != null) {
-                     if (UserStorage.isDuplicateRecord(fullName, gender)) {
+                     if (PatientStorage.isDuplicateRecord(fullName, gender)) {
                         System.out.println("The user is already registered. Returning to the main menu...");
                      } else {
-                        String hospitalId = UserStorage.generateHospitalId();
+                        String hospitalId = PatientStorage.generateHospitalId();
                         String defaultPassword = "password";
                         Date dob = java.sql.Date.valueOf(dateOfBirth);
-                        User newUser = new User(hospitalId, fullName, defaultPassword, UserRole.Patient, gender);
-                        UserStorage.saveUser(newUser);
+                        Patient patient = new Patient(hospitalId, fullName, defaultPassword, gender, dob, bloodType, email);
+                        PatientStorage.savePatient(patient);
                         System.out.println("Registration successful!");
                         System.out.println("Your Hospital ID: " + hospitalId);
                         System.out.println("Your default password is: " + defaultPassword);

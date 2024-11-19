@@ -3,7 +3,8 @@ package services;
 import java.util.Scanner;
 import java.util.function.Predicate;
 import model.user.User;
-import storage.UserStorage;
+import storage.PatientStorage;
+import storage.StaffStorage;
 
 public class ResetPassword {
    private static final int MAX_ATTEMPTS = 3;
@@ -18,22 +19,44 @@ public class ResetPassword {
 
    public void startResetPassword() {
       System.out.println("Welcome to the HMS Password Reset Service");
+      // Prompt the user for selection of user type
+      System.out.println("Select User Type:");
+      System.out.println("1. Patient");
+      System.out.println("2. Staff");
+      System.out.print("Enter your choice (1-2): ");
+      String userTypeChoiceStr = this.getInputWithRetry("Enter your choice (1-2):", (input) -> {
+         return input.matches("[1-2]");
+      }, "Invalid input. Please enter a number between 1 and 2.");
+      int userTypeChoice = Integer.parseInt(userTypeChoiceStr);
+      
       String hospitalId = this.getInputWithRetry("Please enter your Hospital ID:", (input) -> {
          return !input.trim().isEmpty();
       }, "Hospital ID cannot be empty. Please enter a valid Hospital ID.");
       if (hospitalId != null) {
-         User user = UserStorage.fetchUserByHospitalId(hospitalId);
-         if (user == null) {
+
+         User user = null;
+         if (userTypeChoice == 1) {
+            user= PatientStorage.fetchUserByHospitalId(hospitalId);
+         } else if (userTypeChoice == 2) {
+            user = StaffStorage.fetchUserByHospitalId(hospitalId);
+         } 
+
+         if (user == null ) {
             System.out.println("Hospital ID not found. Returning to the main menu...");
          } else {
+            String id_name = user.getName();
             String fullName = this.getInputWithRetry("Please enter your full name for verification:", (input) -> {
-               return input.equalsIgnoreCase(user.getName());
+               return input.equalsIgnoreCase(id_name);
             }, "Invalid or mismatched full name. Please try again.");
             if (fullName != null) {
                System.out.println("Verification successful.");
                String newPassword = this.getNewPassword();
                if (newPassword != null) {
-                  UserStorage.updateUserPassword(hospitalId, newPassword);
+                  if (userTypeChoice == 1) {
+                      PatientStorage.updatePatientPassword(hospitalId, newPassword);
+                  } else if (userTypeChoice == 2) {
+                      StaffStorage.updateStaffPassword(hospitalId, newPassword);
+                  }
                   System.out.println("Your password has been reset successfully.");
                   System.out.println("You can now log in with your new password.");
                }

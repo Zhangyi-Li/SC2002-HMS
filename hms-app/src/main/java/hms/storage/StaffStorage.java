@@ -86,14 +86,14 @@ public class StaffStorage implements IDataService<Staff>{
     }
 
     // Method to save a new staff
-    public static void saveUser(Staff staff) {
+    public static void saveStaff(Staff staff) {
         staffs.add(staff); // Add staff to in-memory list
         saveToFile(); // Persist changes to the CSV file
         System.out.println("Staff saved successfully!");
     }
 
     // Method to update staff's password
-    public static void updatePatientPassword(String hospitalId, String newPassword) {
+    public static void updateStaffPassword(String hospitalId, String newPassword) {
         staffs.stream()
                 .filter(staff -> staff.getHospitalID().equals(hospitalId))
                 .findFirst()

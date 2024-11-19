@@ -76,7 +76,7 @@ public class PatientStorage implements IDataService<Patient> {
     }
 
     // Method to save a new patient
-    public static void saveUser(Patient patient) {
+    public static void savePatient(Patient patient) {
         patients.add(patient); // Add patient to in-memory list
         saveToFile(); // Persist changes to the CSV file
         System.out.println("Patient saved successfully!");
