@@ -1,7 +1,21 @@
 package controller;
 
+import interfaces.IDataService;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+import java.nio.file.Paths;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import storage.Medication;
+
 public class MedicationContoller {
     // private static final String FILE_PATH = "medications.csv";
+    private static final String MEDICATIONS_FILE_PATH = "hms-app/src/main/resources/data/appointments.csv";
+    private final String FILE_PATH = Paths.get(MEDICATIONS_FILE_PATH).toAbsolutePath().toString();
     private List<Medication> medications;
 
     public MedicationController() {
