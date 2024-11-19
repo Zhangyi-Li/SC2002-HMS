@@ -6,6 +6,10 @@ import controller.DoctorMenuController;
 import controller.PatientMenuController;
 import controller.PharmacistMenuController;
 import model.user.User;
+import storage.AppointmentStorage;
+import storage.DoctorScheduleStorage;
+import storage.PatientStorage;
+import storage.StaffStorage;
 import view.AdministratorMenuView;
 import view.DoctorMenuView;
 import view.PatientMenuView;
@@ -16,17 +20,34 @@ public class Main {
 	public static void main(String[] args) {
 		try {
 
+			// Load patient data
+			PatientStorage patientStorage = new PatientStorage();
+			patientStorage.importData();
+				
+			// Load staff data
+			StaffStorage staffStorage = new StaffStorage();
+			staffStorage.importData();
+
 			AuthController authController = new AuthController();
+			
 			User authenticatedUser = authController.login();
 
 			if(authenticatedUser != null){
 				switch (authenticatedUser.getRole().toString()) {
 					case "Patient" -> {
-						PatientMenuController controller = new PatientMenuController();
+						AppointmentStorage appointmentStorage = new AppointmentStorage();
+						appointmentStorage.importData();
+						DoctorScheduleStorage doctorScheduleStorage = new DoctorScheduleStorage();
+						doctorScheduleStorage.importData();
+						PatientMenuController controller = new PatientMenuController(authenticatedUser);
 						PatientMenuView view = new PatientMenuView(controller);
 						view.showMenu();
 					}
 					case "Doctor" -> {
+						AppointmentStorage appointmentStorage = new AppointmentStorage();
+						appointmentStorage.importData();
+						DoctorScheduleStorage doctorScheduleStorage = new DoctorScheduleStorage();
+						doctorScheduleStorage.importData();
 						DoctorMenuController controller = new DoctorMenuController(authenticatedUser);
 						DoctorMenuView view = new DoctorMenuView(controller);
 						view.showMenu();
@@ -43,7 +64,6 @@ public class Main {
 					}
 					default -> System.out.println("Unknown role.");
 				}
-
 			}
 			
 

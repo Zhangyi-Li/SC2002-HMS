@@ -1,6 +1,5 @@
 package storage;
 
-import interfaces.IDataService;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
@@ -9,20 +8,18 @@ import java.util.ArrayList;
 import java.util.List;
 import model.appointment.DoctorSchedule;
 
-public class DoctorScheduleStorage implements IDataService<DoctorSchedule> {
-    private List<DoctorSchedule> doctorSchedules;
+public class DoctorScheduleStorage {
+    private static List<DoctorSchedule> doctorSchedules;
     private static final String DOCTER_SCHEDULE_FILE_PATH = "hms-app/src/main/resources/data/doctorSchedule.csv";
 
     public DoctorScheduleStorage() {
-        this.doctorSchedules = new ArrayList<>();
+        doctorSchedules = new ArrayList<>();
     }
 
-    @Override
-    public List<DoctorSchedule> getData() {
+    public static List<DoctorSchedule> getData() {
         return doctorSchedules;
     }
 
-    @Override
     public void importData() {
         String absolutePath = Paths.get(DOCTER_SCHEDULE_FILE_PATH).toAbsolutePath().toString();
         try (BufferedReader reader = new BufferedReader(new FileReader(absolutePath))) {

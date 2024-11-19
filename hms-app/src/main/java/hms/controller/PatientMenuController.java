@@ -1,6 +1,15 @@
 package controller;
 
+import model.user.User;
+import services.AppointmentService;
+
 public class PatientMenuController {
+    private static AppointmentService appointmentService = new AppointmentService();
+    private User authenticatedUser;
+
+    public PatientMenuController(User authenticatedUser) {
+        this.authenticatedUser = authenticatedUser;
+    }
 
     public void viewMedicalRecord() {
         System.out.println("Viewing Medical Record...");
@@ -20,6 +29,7 @@ public class PatientMenuController {
     public void scheduleAppointment() {
         System.out.println("Scheduling an Appointment...");
         // Implement logic here
+        appointmentService.scheduleAppointment(authenticatedUser);
     }
 
     public void rescheduleAppointment() {

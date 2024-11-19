@@ -15,7 +15,7 @@ public class PatientMenuView {
         try (Scanner scanner = new Scanner(System.in)) {
             int choice = -1;
 
-            while (choice != 10) {
+            while (choice != 9) {
                 System.out.println("Patient Menu:");
                 System.out.println("1. View Medical Record");
                 System.out.println("2. Update Personal Information");

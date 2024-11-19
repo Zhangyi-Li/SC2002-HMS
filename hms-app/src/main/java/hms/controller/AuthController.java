@@ -34,15 +34,8 @@ public class AuthController {
         boolean exit = false; // Flag to determine when to exit the loop
         User authenticatedUser = null; // Holds the authenticated user
         
-        // Load patient data
-        PatientStorage patientStorage = new PatientStorage();
-        patientStorage.importData();
-        List<User> patients = new ArrayList<>(patientStorage.getData());
-        
-        // Load staff data
-        StaffStorage staffStorage = new StaffStorage();
-        staffStorage.importData();
-        List<User> staffs = new ArrayList<>(staffStorage.getData());
+        List<User> patients = new ArrayList<>(PatientStorage.getData());
+        List<User> staffs = new ArrayList<>(StaffStorage.getData());
 
         // Main loop for login, registration, and password reset
         while (!exit) {

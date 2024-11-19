@@ -1,6 +1,5 @@
 package storage;
 
-import interfaces.IDataService;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
@@ -10,20 +9,19 @@ import java.util.Arrays;
 import java.util.List;
 import model.appointment.AppointmentOutcomeRecord;
 
-public class AppointmentOutcomeRecordStorage implements IDataService<AppointmentOutcomeRecord>{
-    private List<AppointmentOutcomeRecord> appointmentOutcomeRecords;
+public class AppointmentOutcomeRecordStorage{
+    private static List<AppointmentOutcomeRecord> appointmentOutcomeRecords;
     private static final String APPOINTMENT_OUTCOME_RECORDS_FILE_PATH = "hms-app/src/main/resources/data/appointmentOutcomeRecords.csv";
 
     public AppointmentOutcomeRecordStorage() {
-        this.appointmentOutcomeRecords = new ArrayList<>();
+        appointmentOutcomeRecords = new ArrayList<>();
     }
 
-    @Override
-    public List<AppointmentOutcomeRecord> getData() {
+    
+    public static List<AppointmentOutcomeRecord> getData() {
         return appointmentOutcomeRecords;
     }
 
-    @Override
     public void importData() {
         String absolutePath = Paths.get(APPOINTMENT_OUTCOME_RECORDS_FILE_PATH).toAbsolutePath().toString();
         try (BufferedReader reader = new BufferedReader(new FileReader(absolutePath))) {
