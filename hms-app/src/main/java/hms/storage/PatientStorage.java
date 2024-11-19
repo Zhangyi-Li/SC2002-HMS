@@ -1,6 +1,5 @@
 package storage;
 
-import interfaces.IDataService;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.FileReader;
@@ -13,11 +12,10 @@ import java.util.Date;
 import java.util.List;
 import model.user.Patient;
 
-public class PatientStorage implements IDataService<Patient> {
+public class PatientStorage{
     private static final String PATIENT_FILE_PATH = "hms-app/src/main/resources/data/Patient_List.csv";
     private static final List<Patient> patients = new ArrayList<>();
 
-    @Override
     public void importData() {
         String absolutePath = Paths.get(PATIENT_FILE_PATH).toAbsolutePath().toString();
         try (BufferedReader br = new BufferedReader(new FileReader(absolutePath))) {
@@ -47,8 +45,7 @@ public class PatientStorage implements IDataService<Patient> {
         }
     }
 
-    @Override
-    public List<Patient> getData() {
+    public static List<Patient> getData() {
         return patients;
     }
 

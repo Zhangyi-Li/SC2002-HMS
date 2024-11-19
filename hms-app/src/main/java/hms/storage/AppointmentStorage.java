@@ -1,6 +1,5 @@
 package storage;
 
-import interfaces.IDataService;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
@@ -12,21 +11,20 @@ import java.util.Date;
 import java.util.List;
 import model.appointment.Appointment;
 
-public class AppointmentStorage implements IDataService<Appointment> {
-    private List<Appointment> appointments;
+public class AppointmentStorage  {
+    private static List<Appointment> appointments;
     private static final String APPOINTMENTS_FILE_PATH = "hms-app/src/main/resources/data/appointments.csv";
-    private final String absolutePath = Paths.get(APPOINTMENTS_FILE_PATH).toAbsolutePath().toString();
+    private static final String absolutePath = Paths.get(APPOINTMENTS_FILE_PATH).toAbsolutePath().toString();
 
     public AppointmentStorage() {
-        this.appointments = new ArrayList<>();
+        appointments = new ArrayList<>();
     }
 
-    @Override
-    public List<Appointment> getData() {
+    public static List<Appointment> getData() {
         return appointments;
     }
 
-    @Override
+
     public void importData() {
         try (BufferedReader reader = new BufferedReader(new FileReader(absolutePath))) {
             String line;
@@ -50,26 +48,26 @@ public class AppointmentStorage implements IDataService<Appointment> {
                 );
                 appointments.add(appointment);
             }
-        } catch (IOException | ParseException e) {
-            e.printStackTrace();
+            } catch (IOException | ParseException e) {
+                System.err.println("Error importing data: " + e.getMessage());
+            }
         }
-    }
-
-    public void addAppointment(Appointment appointment) {
-        appointments.add(appointment);
-
-        // Append new appointment to file
-        String newAppointment = String.join(",", appointment.getAppointmentID(), appointment.getPatientID(), appointment.getDoctorID(),
-            new SimpleDateFormat("yyyy-MM-dd").format(appointment.getAppointmentDate()), appointment.getAppointmentTime(),
-            appointment.getAppointmentStatus(), appointment.getAppointmentOutcomeRecordID());
-        try {
-            java.nio.file.Files.write(Paths.get(absolutePath), (newAppointment + System.lineSeparator()).getBytes(), java.nio.file.StandardOpenOption.APPEND);
-        } catch (IOException e) {
-            e.printStackTrace();
+    
+        public static void addAppointment(Appointment appointment) {
+            appointments.add(appointment);
+    
+            // Append new appointment to file
+            String newAppointment = String.join(",", appointment.getAppointmentID(), appointment.getPatientID(), appointment.getDoctorID(),
+                new SimpleDateFormat("yyyy-MM-dd").format(appointment.getAppointmentDate()), appointment.getAppointmentTime(),
+                appointment.getAppointmentStatus(), appointment.getAppointmentOutcomeRecordID());
+            try {
+                java.nio.file.Files.write(Paths.get(absolutePath), (newAppointment + System.lineSeparator()).getBytes(), java.nio.file.StandardOpenOption.APPEND);
+            } catch (IOException e) {
+                System.err.println("Error updating appointment: " + e.getMessage());
+            }
         }
-    }
 
-    public void updateAppointment(Appointment appointment){
+        public static void updateAppointment(Appointment appointment) {
         // Update appointment in list
         for (int i = 0; i < appointments.size(); i++) {
             if (appointments.get(i).getAppointmentID().equals(appointment.getAppointmentID())) {
@@ -89,7 +87,7 @@ public class AppointmentStorage implements IDataService<Appointment> {
             }
             java.nio.file.Files.write(Paths.get(absolutePath), String.join(System.lineSeparator(), fileContent).getBytes());
         } catch (IOException e) {
-            e.printStackTrace();
+            System.err.println("Error updating appointment: " + e.getMessage());
         }
     }
 }

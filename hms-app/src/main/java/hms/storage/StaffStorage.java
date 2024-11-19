@@ -1,7 +1,6 @@
 package storage;
 
 import enums.UserRole;
-import interfaces.IDataService;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.FileReader;
@@ -12,12 +11,11 @@ import java.util.ArrayList;
 import java.util.List;
 import model.user.Staff;
 
-public class StaffStorage implements IDataService<Staff>{
+public class StaffStorage {
     
     private static final String STAFF_FILE_PATH = "hms-app/src/main/resources/data/Staff_List.csv";
     private static final List<Staff> staffs = new ArrayList<>();
 
-    @Override
     public void importData() {
         String absolutePath = Paths.get(STAFF_FILE_PATH).toAbsolutePath().toString();
         try (BufferedReader br = new BufferedReader(new FileReader(absolutePath))) {
@@ -44,8 +42,7 @@ public class StaffStorage implements IDataService<Staff>{
         }
     }
 
-    @Override
-    public List<Staff> getData() {
+    public static List<Staff> getData() {
         return staffs;
     }
 
