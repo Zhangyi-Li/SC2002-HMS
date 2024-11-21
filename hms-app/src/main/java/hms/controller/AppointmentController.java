@@ -103,7 +103,7 @@ public class AppointmentController {
             System.out.println("Available slots for the doctor:");
             availableSlots.forEach(System.out::println);
 
-            String time = this.getInputWithRetry("Enter the time of the appointment (HH:mm:ss):", availableSlots::contains, "Invalid slot. Please select an available slot.");
+            String time = this.getInputWithRetry("Enter the time of the appointment (HH:mm):", availableSlots::contains, "Invalid slot. Please select an available slot.");
 
             Appointment appointment = new Appointment(patient.getHospitalID(), doctorID, appointmentDate, time, "PENDING");
             StorageGlobal.AppointmentStorage().addAppointment(appointment);
@@ -186,7 +186,7 @@ public class AppointmentController {
             System.out.println("Available slots for the doctor:");
             availableSlots.forEach(System.out::println);
 
-            String time = this.getInputWithRetry("Enter the time of the appointment (HH:mm:ss):", availableSlots::contains, "Invalid slot. Please select an available slot.");
+            String time = this.getInputWithRetry("Enter the time of the appointment (HH:mm):", availableSlots::contains, "Invalid slot. Please select an available slot.");
 
             current_appointment.setAppointmentStatus("PENDING");
             current_appointment.setDoctorID(doctorID);
