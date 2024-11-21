@@ -22,7 +22,11 @@ public class PatientMenuController {
 
     public void updatePersonalInfo() {
         System.out.println("Updating Personal Information...");
-        // Implement logic here
+        System.out.println("Enter new contact info: ");
+        String contactInfo = System.console().readLine();
+        authenticatedUser.setContactInfo(contactInfo);
+        StorageGlobal.PatientStorage().savePatient(authenticatedUser);
+
     }
 
     public void viewAvailableAppointmentSlots() {

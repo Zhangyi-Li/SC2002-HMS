@@ -86,7 +86,5 @@ public class MedicalRecordStorage {
             System.out.println("Error saving medical record: " + e.getMessage());
         }
     }
-    
-
 
 }

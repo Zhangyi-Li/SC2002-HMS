@@ -9,22 +9,23 @@ import model.user.Staff;
 import services.AdminService;
 import storage.StorageGlobal;
 
-
-
 public class AdministratorMenuController {
 
     private final AdminService service;
     private final AppointmentController appointmentController = new AppointmentController();
     private final ReplenishmentController replenishmentController = new ReplenishmentController();
 
+    // Constructor to initialize AdminService
     public AdministratorMenuController() {
         this.service = new AdminService(); // Initialize AdminService
     }
 
+    // Method to view and manage hospital staff
     public void viewAndManageStaff() {
         Scanner scanner = new Scanner(System.in);
         int choice = -1;
 
+        // Loop until the user chooses to go back to the Administrator Menu
         while (choice != 5) {
             System.out.println("=== Viewing and Managing Hospital Staff ===");
             System.out.println("1. View Hospital Staff");
@@ -34,11 +35,13 @@ public class AdministratorMenuController {
             System.out.println("5. Back to Administrator Menu");
             System.out.print("Enter your choice (1-5): ");
 
+            // Check if the input is an integer
             if (scanner.hasNextInt()) {
                 choice = scanner.nextInt();
                 scanner.nextLine(); // Clear the buffer
                 System.out.println();
 
+                // Handle the user's choice
                 switch (choice) {
                     case 1 -> {
                         System.out.println("Viewing Hospital Staff...");
