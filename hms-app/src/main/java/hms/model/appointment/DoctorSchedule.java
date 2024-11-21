@@ -36,4 +36,8 @@ public class DoctorSchedule {
     public void setEndTime(String endTime) {
         this.endTime = endTime;
     }
+
+    public void display(){
+        System.out.println("Doctor ID: " + doctorID + ", Start Time: " + startTime + ", End Time: " + endTime);
+    }
 }

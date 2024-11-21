@@ -24,14 +24,13 @@ public class AppointmentStorage  {
         return appointments;
     }
 
-
     public void importData() {
         try (BufferedReader reader = new BufferedReader(new FileReader(absolutePath))) {
             String line;
             reader.readLine(); // Skip header
             while ((line = reader.readLine()) != null) {
                 String[] fields = line.split(",");
-                if (fields.length < 7) {
+                if (fields.length < 8) {
                     System.err.println("Skipping invalid line: " + line);
                     continue;
                 }
@@ -41,10 +40,11 @@ public class AppointmentStorage  {
                 Date appointmentDate = new SimpleDateFormat("yyyy-MM-dd").parse(fields[3]);
                 String appointmentTime = fields[4];
                 String appointmentStatus = fields[5];
-                String appointmentOutcomeRecordID = fields[6];
+                String serviceType = fields[6];
+                String notes = fields[7];
 
                 Appointment appointment = new Appointment(
-                        appointmentID, patientID, doctorID, appointmentDate, appointmentTime, appointmentStatus, appointmentOutcomeRecordID
+                        appointmentID, patientID, doctorID, appointmentDate, appointmentTime, appointmentStatus, serviceType, notes
                 );
                 appointments.add(appointment);
             }
@@ -53,41 +53,34 @@ public class AppointmentStorage  {
             }
         }
     
-        public static void addAppointment(Appointment appointment) {
+    public static void addAppointment(Appointment appointment) {
             appointments.add(appointment);
-    
-            // Append new appointment to file
-            String newAppointment = String.join(",", appointment.getAppointmentID(), appointment.getPatientID(), appointment.getDoctorID(),
-                new SimpleDateFormat("yyyy-MM-dd").format(appointment.getAppointmentDate()), appointment.getAppointmentTime(),
-                appointment.getAppointmentStatus(), appointment.getAppointmentOutcomeRecordID());
-            try {
-                java.nio.file.Files.write(Paths.get(absolutePath), (newAppointment + System.lineSeparator()).getBytes(), java.nio.file.StandardOpenOption.APPEND);
-            } catch (IOException e) {
-                System.err.println("Error updating appointment: " + e.getMessage());
-            }
+            saveToFile();
         }
 
-        public static void updateAppointment(Appointment appointment) {
+    public static void updateAppointment(Appointment appointment) {
         // Update appointment in list
-        for (int i = 0; i < appointments.size(); i++) {
-            if (appointments.get(i).getAppointmentID().equals(appointment.getAppointmentID())) {
-                appointments.set(i, appointment);
-                break;
-            }
-        }
+        appointments.replaceAll(a -> a.getAppointmentID().equals(appointment.getAppointmentID()) ? appointment : a);
+        saveToFile();
+    }
 
-        // Update appointment in file
-        try {
-            List<String> fileContent = new ArrayList<>();
-            fileContent.add("AppointmentID,PatientID,DoctorID,AppointmentDate,AppointmentTime,AppointmentStatus,AppointmentOutcomeRecordID");
-            for (Appointment a : appointments) {
-                fileContent.add(String.join(",", a.getAppointmentID(), a.getPatientID(), a.getDoctorID(),
-                    new SimpleDateFormat("yyyy-MM-dd").format(a.getAppointmentDate()), a.getAppointmentTime(),
-                    a.getAppointmentStatus(), a.getAppointmentOutcomeRecordID()));
+    public static void saveToFile() {
+        try (java.io.BufferedWriter bw = new java.io.BufferedWriter(new java.io.FileWriter(absolutePath))) {
+            // Write header to the CSV file
+            bw.write("AppointmentID,PatientID,DoctorID,Appointment Date,Appointment Time,Appointment Status,Service Type,Consultation Notes");
+            bw.newLine();
+
+            // Write each appointment to the file
+            for (Appointment appointment : appointments) {
+                bw.write(String.format("%s,%s,%s,%s,%s,%s",
+                    appointment.getAppointmentID(), appointment.getPatientID(), appointment.getDoctorID(),
+                    new SimpleDateFormat("yyyy-MM-dd").format(appointment.getAppointmentDate()), appointment.getAppointmentTime(),
+                    appointment.getAppointmentStatus(), appointment.getServiceType(), appointment.getNotes()));
+                bw.newLine();
             }
-            java.nio.file.Files.write(Paths.get(absolutePath), String.join(System.lineSeparator(), fileContent).getBytes());
         } catch (IOException e) {
-            System.err.println("Error updating appointment: " + e.getMessage());
+            System.err.println("Error saving appointment: " + e.getMessage());
         }
     }
+
 }

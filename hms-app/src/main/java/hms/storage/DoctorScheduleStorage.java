@@ -35,36 +35,23 @@ public class DoctorScheduleStorage {
                 doctorSchedules.add(slot);
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            System.err.println("Error importing data: " + e.getMessage());
         }
     }
 
-    // // list of slot in 1hr interval base on the doctors schedule starttime and endtime
-    // public List<String> getDoctorSlots(String doctorID) {
-    //     List<String> slots = new ArrayList<>();
-    //     for (DoctorSchedule slot : doctorSchedules) {
-    //         if (slot.getDoctorID().equals(doctorID)) {
-    //             String startTime = slot.getStartTime();
-    //             String endTime = slot.getEndTime();
-    //             while (startTime.compareTo(endTime) < 0) {
-    //                 slots.add(startTime);
-    //                 startTime = addMinutes(startTime, 60);
-    //             }
-    //         }
-    //     }
-    //     return slots;
-    // }
+    public static void editDoctorSchedule(DoctorSchedule doctorSchedule) {
 
-    // // add Minutes to time in HH:mm format
-    // private String addMinutes(String time, int minutes) {
-    //     String[] parts = time.split(":");
-    //     int hours = Integer.parseInt(parts[0]);
-    //     int mins = Integer.parseInt(parts[1]);
-    //     mins += minutes;
-    //     if (mins >= 60) {
-    //         hours++;
-    //         mins = mins - 60;
-    //     }
-    //     return String.format("%02d:%02d", hours, mins);
-    // }
+        doctorSchedules.removeIf(slot -> slot.getDoctorID().equals(doctorSchedule.getDoctorID()));
+        doctorSchedules.add(doctorSchedule);
+        String newDoctorSchedule = String.join(",", doctorSchedule.getDoctorID(), doctorSchedule.getStartTime(),
+                doctorSchedule.getEndTime());
+        try {
+            String absolutePath = Paths.get(DOCTER_SCHEDULE_FILE_PATH).toAbsolutePath().toString();
+            java.nio.file.Files.write(java.nio.file.Paths.get(absolutePath), (newDoctorSchedule + "\n").getBytes(),
+                    java.nio.file.StandardOpenOption.APPEND);
+        } catch (IOException e) {
+            System.err.println("Error editing data: " + e.getMessage());
+        }
+    }
+    
 }

@@ -10,6 +10,7 @@ import storage.AppointmentStorage;
 import storage.DoctorScheduleStorage;
 import storage.PatientStorage;
 import storage.StaffStorage;
+import storage.StorageGlobal;
 import view.AdministratorMenuView;
 import view.DoctorMenuView;
 import view.PatientMenuView;
@@ -53,6 +54,7 @@ public class Main {
 						view.showMenu();
 					}
 					case "Pharmacist" -> {
+						StorageGlobal.MedicationStorage().importData();
 						PharmacistMenuController controller = new PharmacistMenuController();
 						PharmacistMenuView view = new PharmacistMenuView(controller);
 						view.showMenu();

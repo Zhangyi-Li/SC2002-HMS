@@ -1,15 +1,16 @@
-package services;
+package controller;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import model.appointment.DoctorSchedule;
-import storage.DoctorScheduleStorage;
+import storage.StorageGlobal;
 
-public class DoctorScheduleService {
-
+public class DoctorScheduleController {
+    
     // list of slot in 1hr interval base on the doctors schedule starttime and endtime
     public List<String> getDoctorSlots(String doctorID) {
-        List<DoctorSchedule> doctorSchedules = DoctorScheduleStorage.getData();
+        List<DoctorSchedule> doctorSchedules = StorageGlobal.DoctorScheduleStorage().getData();
         List<String> slots = new ArrayList<>();
         for (DoctorSchedule slot : doctorSchedules) {
             if (slot.getDoctorID().equals(doctorID)) {
