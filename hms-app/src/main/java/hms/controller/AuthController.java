@@ -32,12 +32,12 @@ public class AuthController {
     public User login() {
         boolean exit = false; // Flag to determine when to exit the loop
         User authenticatedUser = null; // Holds the authenticated user
-        
-        List<User> patients = new ArrayList<>(StorageGlobal.PatientStorage().getData());
-        List<User> staffs = new ArrayList<>(StorageGlobal.StaffStorage().getData());
 
         // Main loop for login, registration, and password reset
-        while (!exit) {
+        while (!exit) {    
+            List<User> patients = new ArrayList<>(StorageGlobal.PatientStorage().getData());
+            List<User> staffs = new ArrayList<>(StorageGlobal.StaffStorage().getData());
+
             int choice = loginView.showLoginMenu(); // Display the login menu and get user choice
 
             switch (choice) {

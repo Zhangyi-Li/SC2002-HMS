@@ -55,6 +55,7 @@ public class RegisterNewPatient {
                         System.out.println("Your Hospital ID: " + hospitalId);
                         System.out.println("Your default password is: " + defaultPassword);
                         System.out.println("Please change your password after logging in.");
+                        
                      }
                   }
                }

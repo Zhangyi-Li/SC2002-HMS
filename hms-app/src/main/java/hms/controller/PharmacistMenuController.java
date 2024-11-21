@@ -35,7 +35,7 @@ public class PharmacistMenuController {
 
     public void submitReplenishmentRequest() {
         System.out.println("Submitting Replenishment Request...");
-        replenishmentController.updateReplenishmentStatus();
+        replenishmentController.submitReplenishmentRequest();
     }
 
     public void logout() {
