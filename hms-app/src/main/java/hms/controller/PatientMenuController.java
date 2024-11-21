@@ -55,7 +55,7 @@ public class PatientMenuController {
 
     public void viewPastAppointmentRecords() {
         System.out.println("Viewing Past Appointment Outcome Records...");
-        // Implement logic here
+        appointmentController.displayAppointmentOutcomeRecords(authenticatedUser.getAppointments(),"Past Appointment Records");
     }
 
     public void logout() {

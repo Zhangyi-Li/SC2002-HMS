@@ -8,8 +8,6 @@ import controller.PharmacistMenuController;
 import model.user.User;
 import storage.AppointmentStorage;
 import storage.DoctorScheduleStorage;
-import storage.PatientStorage;
-import storage.StaffStorage;
 import storage.StorageGlobal;
 import view.AdministratorMenuView;
 import view.DoctorMenuView;
@@ -20,16 +18,9 @@ public class Main {
     
 	public static void main(String[] args) {
 		try {
-
-			// Load patient data
-			PatientStorage patientStorage = new PatientStorage();
-			patientStorage.importData();
-				
-			// Load staff data
-			StaffStorage staffStorage = new StaffStorage();
-			staffStorage.importData();
-
 			AuthController authController = new AuthController();
+
+			while(true){
 			
 			User authenticatedUser = authController.login();
 
@@ -67,6 +58,7 @@ public class Main {
 					default -> System.out.println("Unknown role.");
 				}
 			}
+		}
 			
 
         } catch (Exception e) {
