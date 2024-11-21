@@ -1,19 +1,23 @@
 package controller;
 
+import java.util.List;
+import model.appointment.Appointment;
+import model.user.Patient;
 import model.user.User;
-import services.AppointmentService;
+import storage.StorageGlobal;
 
 public class PatientMenuController {
-    private static AppointmentService appointmentService = new AppointmentService();
-    private User authenticatedUser;
+    private static final AppointmentController appointmentController = new AppointmentController();
+    private static final MedicalRecordController medicalRecordController = new MedicalRecordController();
+    private final Patient authenticatedUser;
 
     public PatientMenuController(User authenticatedUser) {
-        this.authenticatedUser = authenticatedUser;
+        this.authenticatedUser = StorageGlobal.PatientStorage().fetchUserByHospitalId(authenticatedUser.getHospitalID());
     }
 
     public void viewMedicalRecord() {
         System.out.println("Viewing Medical Record...");
-        // Implement logic here
+        medicalRecordController.viewPatientRecords(authenticatedUser.getHospitalID());
     }
 
     public void updatePersonalInfo() {
@@ -23,28 +27,30 @@ public class PatientMenuController {
 
     public void viewAvailableAppointmentSlots() {
         System.out.println("Viewing Available Appointment Slots...");
-        // Implement logic here
+        appointmentController.viewAvailableAppointmentSlots(authenticatedUser);
     }
 
     public void scheduleAppointment() {
         System.out.println("Scheduling an Appointment...");
-        // Implement logic here
-        appointmentService.scheduleAppointment(authenticatedUser);
+        appointmentController.scheduleAppointment(authenticatedUser);
     }
 
     public void rescheduleAppointment() {
         System.out.println("Rescheduling an Appointment...");
-        // Implement logic here
+        appointmentController.rescheduleAppointment(authenticatedUser);
     }
 
     public void cancelAppointment() {
         System.out.println("Canceling an Appointment...");
-        // Implement logic here
+        appointmentController.cancelAppointment(authenticatedUser);
     }
 
     public void viewScheduledAppointments() {
         System.out.println("Viewing Scheduled Appointments...");
-        // Implement logic here
+        List<Appointment> appointments = authenticatedUser.getAppointments().stream()
+                .filter(a -> a.getAppointmentStatus().equals("PENDING") || a.getAppointmentStatus().equals("CONFIRMED"))
+                .toList();
+        appointmentController.displayAppointments(appointments, "Scheduled Appointments");
     }
 
     public void viewPastAppointmentRecords() {

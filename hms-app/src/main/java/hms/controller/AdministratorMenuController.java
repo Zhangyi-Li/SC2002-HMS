@@ -3,8 +3,6 @@ package controller;
 import enums.UserRole;
 import java.util.Scanner;
 import services.AdminService;
-import storage.Medication;
-//import model.user.User;
 
 public class AdministratorMenuController {
 
@@ -39,14 +37,11 @@ public class AdministratorMenuController {
                         String hospitalID = scanner.next();
                         System.out.print("Enter Name: ");
                         String name = scanner.next();
-                        System.out.print("Enter Email: ");
-                        String email = scanner.next();
                     
                         System.out.println("Select Role:");
                         System.out.println("1. Doctor");
                         System.out.println("2. Pharmacist");
-                        System.out.println("3. Administrator");
-                        System.out.print("Enter your choice (1-3): ");
+                        System.out.print("Enter your choice (1-2): ");
                         int roleChoice = scanner.nextInt();
                         UserRole role = UserRole.values()[roleChoice];
 
@@ -69,8 +64,7 @@ public class AdministratorMenuController {
                         System.out.println("Select New Role:");
                         System.out.println("1. Doctor");
                         System.out.println("2. Pharmacist");
-                        System.out.println("3. Administrator");
-                        System.out.print("Enter your choice (1-3): ");
+                        System.out.print("Enter your choice (1-2): ");
                         int roleChoice = scanner.nextInt();
                         UserRole role = UserRole.values()[roleChoice];
 
@@ -117,50 +111,50 @@ public class AdministratorMenuController {
             int choice = scanner.nextInt();
             scanner.nextLine(); // Consume newline
 
-            switch (choice) {
-                case 1:
-                    System.out.print("Enter Medication ID: ");
-                    String id = scanner.nextLine();
-                    System.out.print("Enter Medication Name: ");
-                    String name = scanner.nextLine();
-                    System.out.print("Enter Medication Company: ");
-                    String company = scanner.nextLine();
-                    System.out.print("Enter Medication Cost: ");
-                    double cost = scanner.nextDouble();
-                    scanner.nextLine(); // Consume newline
-                    System.out.print("Enter Medication Description: ");
-                    String description = scanner.nextLine();
-                    Medication newMed = new Medication(id, name, company, cost, description);
-                    medicationController.addMedication(newMed);
-                    break;
+            // switch (choice) {
+            //     case 1:
+            //         System.out.print("Enter Medication ID: ");
+            //         String id = scanner.nextLine();
+            //         System.out.print("Enter Medication Name: ");
+            //         String name = scanner.nextLine();
+            //         System.out.print("Enter Medication Company: ");
+            //         String company = scanner.nextLine();
+            //         System.out.print("Enter Medication Cost: ");
+            //         double cost = scanner.nextDouble();
+            //         scanner.nextLine(); // Consume newline
+            //         System.out.print("Enter Medication Description: ");
+            //         String description = scanner.nextLine();
+            //         Medication newMed = new Medication(id, name, company, cost, description);
+            //         medicationController.addMedication(newMed);
+            //         break;
 
-                case 2:
-                    System.out.print("Enter Medication ID to update: ");
-                    String updateID = scanner.nextLine();
-                    System.out.print("Enter New Medication Name: ");
-                    String updateName = scanner.nextLine();
-                    System.out.print("Enter New Medication Company: ");
-                    String updateCompany = scanner.nextLine();
-                    System.out.print("Enter New Medication Cost: ");
-                    double updateCost = scanner.nextDouble();
-                    scanner.nextLine(); // Consume newline
-                    System.out.print("Enter New Medication Description: ");
-                    String updateDescription = scanner.nextLine();
-                    medicationController.updateMedication(updateID, updateName, updateCompany, updateCost, updateDescription);
-                    break;
+            //     case 2:
+            //         System.out.print("Enter Medication ID to update: ");
+            //         String updateID = scanner.nextLine();
+            //         System.out.print("Enter New Medication Name: ");
+            //         String updateName = scanner.nextLine();
+            //         System.out.print("Enter New Medication Company: ");
+            //         String updateCompany = scanner.nextLine();
+            //         System.out.print("Enter New Medication Cost: ");
+            //         double updateCost = scanner.nextDouble();
+            //         scanner.nextLine(); // Consume newline
+            //         System.out.print("Enter New Medication Description: ");
+            //         String updateDescription = scanner.nextLine();
+            //         medicationController.updateMedication(updateID, updateName, updateCompany, updateCost, updateDescription);
+            //         break;
 
-                case 3:
-                    medicationController.displayMedications();
-                    break;
+            //     case 3:
+            //         medicationController.displayMedications();
+            //         break;
 
-                case 4:
-                    System.out.println("Exiting Medication Management System.");
-                    return;
+            //     case 4:
+            //         System.out.println("Exiting Medication Management System.");
+            //         return;
 
-                default:
-                    System.out.println("Invalid option. Please try again.");
-                    break;
-            }
+            //     default:
+            //         System.out.println("Invalid option. Please try again.");
+            //         break;
+            // }
         }
     }
 

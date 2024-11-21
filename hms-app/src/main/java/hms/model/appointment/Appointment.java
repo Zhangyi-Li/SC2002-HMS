@@ -10,27 +10,37 @@ public class Appointment {
     private Date appointmentDate;
     private String appointmentTime;
     private String appointmentStatus; // PENDING, CONFIRMED, COMPLETED, CANCELLED, REJECTED
-    private String appointmentOutcomeRecordID;
+    private String serviceType = "N/A";
+    private String notes ="N/A";
 
     // Constructor
-    public Appointment(String appointmentID, String patientID, String doctorID, Date appointmentDate, String appointmentTime, String appointmentStatus, String appointmentOutcomeRecordID) {
+    public Appointment(String appointmentID, String patientID, String doctorID, Date appointmentDate, String appointmentTime, String appointmentStatus, String serviceType, String notes) {
         this.appointmentID = appointmentID;
         this.patientID = patientID;
         this.doctorID = doctorID;
         this.appointmentDate = appointmentDate;
         this.appointmentTime = appointmentTime;
         this.appointmentStatus = appointmentStatus;
-        this.appointmentOutcomeRecordID = appointmentOutcomeRecordID;
+        this.serviceType = serviceType;
+        this.notes = notes;
     }
 
-    public Appointment(String patientID, String doctorID, Date appointmentDate, String appointmentTime, String appointmentStatus, String appointmentOutcomeRecordID) {
+    public Appointment(String appointmentID, String patientID, String doctorID, Date appointmentDate, String appointmentTime, String appointmentStatus) {
+        this.appointmentID = appointmentID;
+        this.patientID = patientID;
+        this.doctorID = doctorID;
+        this.appointmentDate = appointmentDate;
+        this.appointmentTime = appointmentTime;
+        this.appointmentStatus = appointmentStatus;
+    }
+
+    public Appointment(String patientID, String doctorID, Date appointmentDate, String appointmentTime, String appointmentStatus) {
         this.appointmentID = generateID();
         this.patientID = patientID;
         this.doctorID = doctorID;
         this.appointmentDate = appointmentDate;
         this.appointmentTime = appointmentTime;
         this.appointmentStatus = appointmentStatus;
-        this.appointmentOutcomeRecordID = appointmentOutcomeRecordID;
     }
 
     // ID Generator
@@ -83,17 +93,20 @@ public class Appointment {
         this.appointmentStatus = appointmentStatus;
     }
 
-    public String getAppointmentOutcomeRecordID() {
-        return appointmentOutcomeRecordID;
+    public String getServiceType() {
+        return serviceType;
     }
 
-    public void setAppointmentOutcomeRecordID(String appointmentOutcomeRecordID) {
-        this.appointmentOutcomeRecordID = appointmentOutcomeRecordID;
+    public void setServiceType(String serviceType) {
+        this.serviceType = serviceType;
     }
 
-    // Method to update appointment status
-    public void updateStatus(String status) {
-        this.appointmentStatus = status;
+    public String getNotes() {
+        return notes;
+    }
+
+    public void setNotes(String notes) {
+        this.notes = notes;
     }
 
     public void display(){
