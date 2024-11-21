@@ -31,7 +31,7 @@ public class MedicationController {
         StorageGlobal.MedicationStorage().saveToFile(); // Persist changes to the CSV file
     }
 
-    // Method to fetch a medication by hospital ID
+    // Method to fetch a medication by medication Name
     public static Medication fetchMedicationByName(String medicationName) {
         return StorageGlobal.MedicationStorage().getData().stream()
                 .filter(medication -> medication.getMedicineName().equalsIgnoreCase(medicationName))

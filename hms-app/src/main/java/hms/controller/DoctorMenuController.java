@@ -16,6 +16,7 @@ public class DoctorMenuController {
     private static final AppointmentController appointmentController = new AppointmentController();
     private static final DoctorScheduleController doctorScheduleController = new DoctorScheduleController();
     private static final MedicalRecordController medicalRecordController = new MedicalRecordController();
+    private static final PrescriptionController prescriptionController = new PrescriptionController();
 
     private final Doctor authenticatedUser;
     private static final DateTimeFormatter TIME_FORMATTER = DateTimeFormatter.ofPattern("HH:mm");
@@ -86,8 +87,7 @@ public class DoctorMenuController {
 
     public void recordOutcome() {
         System.out.println("Recording Appointment Outcome...");
-        // Implement logic here
-        
+        appointmentController.recordAppointmentOutcome();
     }
 
     public void logout() {

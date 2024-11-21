@@ -26,6 +26,36 @@ public class PrescriptionController {
         }
     }
 
+    // Method to contain the addition of a new prescription
+    public void addPrescription(String appointmentID) {
+        medicationController.displayMedications();
+        while(true){
+            // have 2 menu options: add prescriptions and back
+            System.out.println("");
+            System.out.println("Add Prescription");
+            System.out.println("Select an option:");
+            System.out.println("0. Add Prescription");
+            System.out.println("1. Back");
+            String choice = getInputWithRetry("Enter choice: ",
+                    input -> input.matches("[0-1]"),
+                    "Invalid choice! Please try again.");
+            if (choice.equals("0")) {
+                String medicationName = getInputWithRetry("Enter Medication Name: ",
+                        input -> medicationController.fetchMedicationByName(input) != null && !isPrescriptionExists(appointmentID, input),
+                        "Invalid Medication Name! Please try again.");
+                
+                int quantity = Integer.parseInt(getInputWithRetry("Enter Quantity: ",
+                        input -> input.matches("\\d+") && Integer.parseInt(input) > 0,
+                        "Invalid Quantity! Please try again."));
+                        
+                Prescription prescription = new Prescription(appointmentID, medicationName, quantity);
+                addPrescription(prescription);
+            } else {
+                return;
+            }
+        }
+    }
+
     // Method to add a new prescription
     public void addPrescription(Prescription prescription) {
         StorageGlobal.PrescriptionStorage().addPrescription(prescription);
@@ -57,6 +87,26 @@ public class PrescriptionController {
                     prescription.getQuantity(),
                     prescription.getStatus());
         }
+    }
+
+    // Method to check if a prescription exists
+    public boolean isPrescriptionExists(String appointmentID, String medicationName) {
+        return StorageGlobal.PrescriptionStorage().getData().stream()
+                .anyMatch(prescription -> prescription.getAppointmentID().equalsIgnoreCase(appointmentID)
+                        && prescription.getMedicationName().equalsIgnoreCase(medicationName));
+    }
+
+    // Method to get input with retry
+    private String getInputWithRetry(String prompt, java.util.function.Predicate<String> validator, String errorMessage) {
+        String input;
+        do {
+            System.out.println(prompt);
+            input = System.console().readLine();
+            if (!validator.test(input)) {
+                System.out.println(errorMessage);
+            }
+        } while (!validator.test(input));
+        return input;
     }
 
 }

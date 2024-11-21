@@ -72,7 +72,7 @@ public class AppointmentStorage  {
 
             // Write each appointment to the file
             for (Appointment appointment : appointments) {
-                bw.write(String.format("%s,%s,%s,%s,%s,%s",
+                bw.write(String.format("%s,%s,%s,%s,%s,%s,%s,%s",
                     appointment.getAppointmentID(), appointment.getPatientID(), appointment.getDoctorID(),
                     new SimpleDateFormat("yyyy-MM-dd").format(appointment.getAppointmentDate()), appointment.getAppointmentTime(),
                     appointment.getAppointmentStatus(), appointment.getServiceType(), appointment.getNotes()));

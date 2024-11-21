@@ -8,6 +8,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
+import model.Prescription;
 import model.appointment.Appointment;
 import model.appointment.DoctorSchedule;
 import model.user.Doctor;
@@ -19,6 +20,7 @@ public class AppointmentController {
     private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd");
     private static final DateTimeFormatter TIME_FORMATTER = DateTimeFormatter.ofPattern("HH:mm");
     private DoctorScheduleController doctorScheduleController = new DoctorScheduleController();
+    private PrescriptionController prescriptionController = new PrescriptionController();
     
     // Method for patient to cancel appointment
     public void cancelAppointment(Patient patient) {
@@ -355,6 +357,117 @@ public class AppointmentController {
         doctor.setSchedule(schedule);
         System.out.println("Doctor schedule updated successfully.");
     }
+
+
+    public void recordAppointmentOutcome(){
+        // get all appointments
+        List<Appointment> appointments = StorageGlobal.AppointmentStorage().getData();
+        // filter appointments with status confirmed
+        List<Appointment> confirmedAppointments = appointments.stream()
+            .filter(appointment -> appointment.getAppointmentStatus().equals("CONFIRMED"))
+            .collect(Collectors.toList());
+
+        displayAppointments(confirmedAppointments, "Select the appointment to record appointment outcome");
+        if(confirmedAppointments.isEmpty()){
+            System.out.println("No confirmed appointments.");
+            return;
+        }
+
+        // select the index of the appointment
+        String appointmentIndexStr = getInputWithRetry(
+            "Enter the index of the appointment you want to record outcome: ",
+            input -> {
+            try {
+                int index = Integer.parseInt(input);
+                return index >= 1 && index <= confirmedAppointments.size();
+            } catch (NumberFormatException e) {
+                return false;
+            }
+            },
+            "Invalid index. Please enter a valid index."
+        );
+        int appointmentIndex = Integer.parseInt(appointmentIndexStr);
+
+        Appointment appointment = confirmedAppointments.get(appointmentIndex - 1);
+       // ask user to input service type and notes
+        String serviceType = getInputWithRetry("Enter the service type:", (input) -> {
+            return !input.isEmpty();
+        }, "Service type cannot be empty.");
+
+        String notes = getInputWithRetry("Enter the Consulation notes:", (input) -> {
+            return !input.isEmpty();
+        }, "Notes cannot be empty.");
+
+
+        // doctor to view medication 
+        prescriptionController.addPrescription(appointment.getAppointmentID());
+
+        // update the appointment status to completed
+        appointment.setAppointmentStatus("COMPLETED");
+        appointment.setServiceType(serviceType);
+        appointment.setNotes(notes);
+
+        StorageGlobal.AppointmentStorage().updateAppointment(appointment);
+
+        System.out.println("Appointment outcome recorded successfully.");
+
+    }
+
+    public void viewPastAppointments(List<Appointment> appointments){
+        List<Appointment> _appointments = appointments.stream()
+        .filter((appointment) -> {
+            return appointment.getAppointmentStatus().equals("COMPLETED");
+        }).collect(Collectors.toList());
+
+        displayAppointments(_appointments, "Passed Appointments");
+    }
+
+    // display appointments outcome record
+    public void displayAppointmentOutcomeRecords(List<Appointment> appointments, String title) {
+        System.out.println(title);
+        System.out.println("------------------------------------------------------------------------------------------------");
+        System.out.printf("%-10s %-15s %-15s %-15s %-15s %-15s %-15s %-15s \n", "Index.", "Patient ID", "Date", "Time", "Status", "Service Type", "Notes", "Medicine Name", "Quantity", "Status");
+        System.out.println("------------------------------------------------------------------------------------------------");
+
+        final int[] index = {1};
+        appointments.forEach(appointment -> {
+            List<Prescription> prescriptions = StorageGlobal.PrescriptionStorage().getData().stream()
+                .filter(prescription -> prescription.getAppointmentID().equals(appointment.getAppointmentID()))
+                .collect(Collectors.toList());
+
+            prescriptions.forEach(prescription -> {
+                System.out.printf("%-10d %-15s %-15s %-15s %-15s %-15s %-15s %-15s \n",
+                    index[0],
+                    appointment.getPatientID(),
+                    DATE_FORMATTER.format(appointment.getAppointmentDate().toInstant().atZone(java.time.ZoneId.systemDefault()).toLocalDate()),
+                    appointment.getAppointmentTime(),
+                    appointment.getAppointmentStatus(),
+                    appointment.getServiceType(),
+                    appointment.getNotes(),
+                    prescription.getMedicationName(),
+                    prescription.getQuantity(),
+                    prescription.getStatus());
+            });
+
+            if (prescriptions.isEmpty()) {
+                System.out.printf("%-10d %-15s %-15s %-15s %-15s %-15s %-15s %-15s \n",
+                    index[0],
+                    appointment.getPatientID(),
+                    DATE_FORMATTER.format(appointment.getAppointmentDate().toInstant().atZone(java.time.ZoneId.systemDefault()).toLocalDate()),
+                    appointment.getAppointmentTime(),
+                    appointment.getAppointmentStatus(),
+                    appointment.getServiceType(),
+                    appointment.getNotes(),
+                    "N/A",
+                    0,
+                    "N/A");
+            }  
+            index[0]++;
+        });
+
+        System.out.println("------------------------------------------------------------------------------------------------");
+    } 
+
 
     // Method to get input with retry
     private String getInputWithRetry(String prompt, java.util.function.Predicate<String> validator, String errorMessage) {

@@ -16,6 +16,11 @@ public class LoginView {
      * @return The user's choice as an integer between 0 and 3.
      */
     public int showLoginMenu() {
+        // clear console
+        System.out.print("\033[H\033[2J");
+        System.out.flush();
+        sc.reset();
+
         // Display the welcome message and menu options
         System.out.println("Welcome to Hospital Management System\n");
         System.out.println("Login Menu:");
@@ -29,21 +34,23 @@ public class LoginView {
         
         // Loop until the user provides valid input
         while (true) {
-            String input = sc.nextLine().trim(); // Read and trim user input
-            
-            // Check if the input is numeric
-            if (input.matches("[0-9]+")) { 
-                int choice = Integer.parseInt(input); // Convert input to an integer
+            if (sc.hasNextLine()) {
+                String input = sc.nextLine().trim(); // Read and trim user input
                 
-                // Validate that the choice is within the acceptable range
-                if (choice >= 0 && choice <= 3) {
-                    return choice; // Return the valid choice
+                // Check if the input is numeric
+                if (input.matches("[0-9]+")) { 
+                    int choice = Integer.parseInt(input); // Convert input to an integer
+                    
+                    // Validate that the choice is within the acceptable range
+                    if (choice >= 0 && choice <= 3) {
+                        return choice; // Return the valid choice
+                    } else {
+                        System.out.println("Invalid input. Please enter a number between 0 and 3!");
+                    }
                 } else {
-                    System.out.println("Invalid input. Please enter a number between 0 and 3!");
+                    // Display error message if the input is not numeric
+                    System.out.println("Invalid input. Please enter a valid number (0-3).\n");
                 }
-            } else {
-                // Display error message if the input is not numeric
-                System.out.println("Invalid input. Please enter a valid number (0-3).\n");
             }
         }
     }
@@ -84,6 +91,7 @@ public class LoginView {
                 System.out.println("Invalid input. Please enter a valid number (0-2).\n");
             }
         }
+
     }
 
     /**

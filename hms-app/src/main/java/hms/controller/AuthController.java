@@ -7,8 +7,7 @@ import model.user.User;
 import services.AuthService; // For handling user-related logic
 import services.RegisterNewPatient; // For authentication services
 import services.ResetPassword; // For handling new patient registration
-import storage.PatientStorage; // Import the resetPassword service class
-import storage.StaffStorage; // For displaying login-related views
+import storage.StorageGlobal; // Import the resetPassword service class
 import view.LoginView; // Import the StaffStorage class
 
 /**
@@ -16,10 +15,11 @@ import view.LoginView; // Import the StaffStorage class
  */
 public class AuthController {
 
-    private static AuthService authService; // Instance of AuthService for authentication
+    private static AuthService authService = new AuthService(); // Instance of AuthService for authentication
     private static final LoginView loginView = new LoginView(); // Instance of LoginView for user interaction
     private static final RegisterNewPatient registerService = new RegisterNewPatient(); // Instance of RegisterNewPatient for registration
     private static final ResetPassword resetPasswordService = new ResetPassword(); // Instance of ResetPassword for password reset
+
 
     public AuthController() {
     }
@@ -30,12 +30,11 @@ public class AuthController {
      * @return Authenticated User object if successful, or null otherwise.
      */
     public User login() {
-        authService = new AuthService(); // Initialize the authentication service
         boolean exit = false; // Flag to determine when to exit the loop
         User authenticatedUser = null; // Holds the authenticated user
         
-        List<User> patients = new ArrayList<>(PatientStorage.getData());
-        List<User> staffs = new ArrayList<>(StaffStorage.getData());
+        List<User> patients = new ArrayList<>(StorageGlobal.PatientStorage().getData());
+        List<User> staffs = new ArrayList<>(StorageGlobal.StaffStorage().getData());
 
         // Main loop for login, registration, and password reset
         while (!exit) {
