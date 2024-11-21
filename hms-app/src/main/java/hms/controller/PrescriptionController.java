@@ -1,6 +1,8 @@
 package controller;
 
+import enums.PrescriptionStatus;
 import java.util.List;
+import java.util.stream.Collectors;
 import model.Prescription;
 import storage.StorageGlobal;
 
@@ -64,25 +66,61 @@ public class PrescriptionController {
     
 
     // Method to update prescription status
-    public void updatePrescriptionStatus(Prescription prescription) {
-        Prescription existingPrescription = StorageGlobal.PrescriptionStorage().findPresciption(prescription);
-        if (existingPrescription != null) {
-            existingPrescription.setStatus(prescription.getStatus());
-            StorageGlobal.PrescriptionStorage().saveToFile();
-            System.out.println("Prescription status updated successfully!");
-        } else {
-            System.out.println("Prescription not found!");
+    public void updatePrescriptionStatus() {
+
+        List<Prescription> prescriptions = StorageGlobal.PrescriptionStorage().getData().stream()
+                .filter(prescription -> prescription.getStatus().equals(PrescriptionStatus.PENDING))
+                .collect(Collectors.toList());
+
+        displayPrescriptions(prescriptions, "Prescriptions Pending Approval");
+
+        if (prescriptions.isEmpty()) {
+            System.out.println("No prescriptions pending approval!");
+            return;
+        }
+
+        while(true){
+            System.out.println("");
+            System.out.println("Update Prescription Status");
+            System.out.println("Select an option:");
+            System.out.println("0. Approve Prescription");
+            System.out.println("1. Back");
+            String choice = getInputWithRetry("Enter choice: ",
+                    input -> input.matches("[0-1]"),
+                    "Invalid choice! Please try again.");
+            if (choice.equals("0")) {
+                Prescription prescription = prescriptions.get(Integer.parseInt(getInputWithRetry("Enter Prescription Index: ",
+                        input -> input.matches("\\d+") && Integer.parseInt(input) >= 0 && Integer.parseInt(input) < prescriptions.size(),
+                        "Invalid Prescription Index! Please try again.")));
+
+                //check if medication is in stock
+                if (MedicationController.fetchMedicationByName(prescription.getMedicationName()).getStock() < prescription.getQuantity()) {
+                    System.out.println("Medication does not have enough stock!");
+                    return;
+                }
+
+                MedicationController.updateMedicineStock(prescription.getMedicationName(),
+                        MedicationController.fetchMedicationByName(prescription.getMedicationName()).getStock() - prescription.getQuantity());
+
+                prescription.setStatus(PrescriptionStatus.DISPENSE);
+
+                StorageGlobal.PrescriptionStorage().addPrescription(prescription);
+
+            } else {
+                return;
+            }
         }
     }
 
     // Method to display prescriptions
     public void displayPrescriptions(List<Prescription> prescriptions, String title) {
         System.out.println(title);
-        System.out.printf("%-20s %-20s %-10s %-15s%n", "Appointment ID", "Medication Name", "Quantity", "Status");
-        System.out.println("---------------------------------------------------------------");
+        System.out.printf("%10s %-20s %-10s %-15s%n", "Index", "Medication Name", "Quantity", "Status");
+        System.out.println("-----------------------------------------------------------------------------");
+        int index = 0;
         for (Prescription prescription : prescriptions) {
-            System.out.printf("%-20s %-20s %-10d %-15s%n",
-                    prescription.getAppointmentID(),
+            System.out.printf("%10s %-20s %-10d %-15s%n",
+                    index++,
                     prescription.getMedicationName(),
                     prescription.getQuantity(),
                     prescription.getStatus());

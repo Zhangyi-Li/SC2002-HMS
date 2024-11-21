@@ -13,7 +13,9 @@ public class Medication {
         this.medicineName = medicineName;
         this.stock = stock;
         this.lowStockLevelAlert = lowStockLevelAlert;
-        if (stock < lowStockLevelAlert) {
+        if (stock == 0) {
+            this.stockStatus = "Out of Stock";
+        } else if (stock <= lowStockLevelAlert) {
             this.stockStatus = "Low Stock";
         } else {
             this.stockStatus = "In Stock";

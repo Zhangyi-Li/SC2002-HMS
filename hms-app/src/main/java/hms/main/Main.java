@@ -46,7 +46,7 @@ public class Main {
 					}
 					case "Pharmacist" -> {
 						StorageGlobal.MedicationStorage().importData();
-						PharmacistMenuController controller = new PharmacistMenuController();
+						PharmacistMenuController controller = new PharmacistMenuController(authenticatedUser);
 						PharmacistMenuView view = new PharmacistMenuView(controller);
 						view.showMenu();
 					}

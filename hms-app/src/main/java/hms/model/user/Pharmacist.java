@@ -8,4 +8,7 @@ public class Pharmacist extends Staff {
         super(hospitalID, name, password, UserRole.Pharmacist, gender, age);
     }
     
+    public Pharmacist(Staff staff){
+        super(staff.getHospitalID(), staff.getName(), staff.getPassword(), UserRole.Doctor, staff.getGender(), staff.getAge());
+    }
 }
