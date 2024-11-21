@@ -8,6 +8,7 @@ public class StorageGlobal {
     private static PrescriptionStorage prescriptionStorage;
     private static MedicationStorage medicationStorage;
     private static MedicalRecordStorage medicalRecordStorage;
+    private static ReplenishmentStorage replenishmentStorage;
 
     public static PatientStorage PatientStorage() {
         if (patientStorage == null) {
@@ -64,4 +65,13 @@ public class StorageGlobal {
         }
         return medicalRecordStorage;
     }
+
+    public static ReplenishmentStorage ReplenishmentStorage() {
+        if (replenishmentStorage == null) {
+            replenishmentStorage = new ReplenishmentStorage();
+            replenishmentStorage.importData();
+        }
+        return replenishmentStorage;
+    }
+
 }
