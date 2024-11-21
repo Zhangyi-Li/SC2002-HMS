@@ -33,7 +33,7 @@ public class PatientStorage{
                     String contactInfo = parts[5].trim();
                     String password = parts[6].trim();
 
-                    Patient patient = new Patient(hospitalID, name, password, gender, dob,bloodType, contactInfo);
+                    Patient patient = new Patient(hospitalID, name, password, gender, dob, bloodType, contactInfo);
                     patients.add(patient);
                 }
             }
@@ -72,8 +72,14 @@ public class PatientStorage{
         }
     }
 
-    // Method to save a new patient
+    // Method to save or update a new patient
     public static void savePatient(Patient patient) {
+        if (isDuplicateRecord(patient.getName(), patient.getGender())) {
+            patients.replaceAll(operator -> operator.getName().equalsIgnoreCase(patient.getName()) && operator.getGender().equalsIgnoreCase(patient.getGender()) ? patient : operator);
+        } else {
+            patients.add(patient);
+        }
+
         patients.add(patient); // Add patient to in-memory list
         saveToFile(); // Persist changes to the CSV file
         System.out.println("Patient saved successfully!");
