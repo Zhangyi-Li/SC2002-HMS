@@ -1,1 +1,2 @@
-ID,Medicine Name,Date,Stock,Status
+ID,Medicine Name,Stock,Status
+R001,Antibiotics,50,APPROVED

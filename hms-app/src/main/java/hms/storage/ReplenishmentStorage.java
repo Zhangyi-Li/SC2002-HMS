@@ -7,9 +7,7 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Paths;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import model.Replenishment;
 
@@ -26,19 +24,16 @@ public class ReplenishmentStorage {
             br.readLine(); // Skip header line
             while ((line = br.readLine()) != null) {
                 String[] parts = line.split(",");
-                if (parts.length > 4) {
+                if (parts.length > 3) {
                     String ID = parts[0].trim();
                     String medicineName = parts[1].trim();
-                    Date date = new SimpleDateFormat("yyyy-MM-dd").parse(parts[2].trim());
-                    int stock = Integer.parseInt(parts[3].trim());
-                    ReplenishmentStatus status = ReplenishmentStatus.valueOf(parts[4].trim());
+                    int stock = Integer.parseInt(parts[2].trim());
+                    ReplenishmentStatus status = ReplenishmentStatus.valueOf(parts[3].trim());
 
-                    Replenishment replenishment = new Replenishment(ID, medicineName, date, stock, status);
+                    Replenishment replenishment = new Replenishment(ID, medicineName, stock, status);
                     replenishments.add(replenishment);
                 }
             }
-        } catch (java.text.ParseException e) {
-            System.out.println("Error parsing date: " + e.getMessage());
         } catch (IOException e) {
             System.out.println("Error loading patient: " + e.getMessage());
         }
@@ -49,11 +44,10 @@ public class ReplenishmentStorage {
     }
 
     // Method to check for duplicate records
-    public static boolean isDuplicateRecord(String medicineName, Date date) {
-        // Check if a replenishment with the same medicine name and date already exists
+    public static boolean isDuplicateRecord(String ID) {
+        // Check if a replenishment with the same ID
         return replenishments.stream().anyMatch(replenishment ->
-            replenishment.getMedicineName().equalsIgnoreCase(medicineName) &&
-            replenishment.getDate().equals(date)
+            replenishment.getID().equals(ID)
         );
     }
 
@@ -64,7 +58,7 @@ public class ReplenishmentStorage {
 
     // Method to add or update a replenishment
     public void addReplenishment(Replenishment replenishment) {
-        if (isDuplicateRecord(replenishment.getMedicineName(), replenishment.getDate())) {
+        if (isDuplicateRecord(replenishment.getID())) {
             replenishments.set(replenishments.indexOf(replenishment), replenishment);
         } else {
             replenishments.add(replenishment);
@@ -75,9 +69,9 @@ public class ReplenishmentStorage {
     public void saveToFile(){
         String absolutePath = Paths.get(REPLENISHMENT_FILE_PATH).toAbsolutePath().toString();
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(absolutePath))) {
-            bw.write("ID,Medicine Name,Date,Stock,Status\n");
+            bw.write("ID,Medicine Name,Stock,Status\n");
             for (Replenishment replenishment : replenishments) {
-                bw.write(replenishment.getID() + "," + replenishment.getMedicineName() + "," + new SimpleDateFormat("yyyy-MM-dd").format(replenishment.getDate()) + "," + replenishment.getStock() + "," + replenishment.getStatus() + "\n");
+                bw.write(replenishment.getID() + "," + replenishment.getMedicineName()  + "," + replenishment.getStock() + "," + replenishment.getStatus() + "\n");
             }
         } catch (IOException e) {
             System.out.println("Error saving replenishment: " + e.getMessage());

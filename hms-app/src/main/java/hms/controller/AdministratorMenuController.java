@@ -1,7 +1,6 @@
 package controller;
 
 import enums.UserRole;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 import model.Medication;
@@ -16,6 +15,7 @@ public class AdministratorMenuController {
 
     private final AdminService service;
     private final AppointmentController appointmentController = new AppointmentController();
+    private final ReplenishmentController replenishmentController = new ReplenishmentController();
 
     public AdministratorMenuController() {
         this.service = new AdminService(); // Initialize AdminService
@@ -263,60 +263,8 @@ public class AdministratorMenuController {
 
     public void approveReplenishmentRequests() {
         System.out.println("=== Approving Replenishment Requests ===");
-        
-        // Fetch low-stock or out-of-stock medications
-        List<Medication> medications = StorageGlobal.MedicationStorage().getData();
-        List<Medication> lowStockMedications = new ArrayList<>();
+        replenishmentController.updateReplenishmentStatus();
 
-        for (Medication med : medications) {
-            if (med.getStock() <= med.getLowStockLevelAlert()) {
-                lowStockMedications.add(med);
-            }
-        }
-
-        // Check if there are any medications to replenish
-        if (lowStockMedications.isEmpty()) {
-            System.out.println("No medications require replenishment at the moment.");
-            return;
-        }
-
-        // Display medications that need replenishment
-        System.out.println("The following medications require replenishment:");
-        System.out.printf("%-20s %-10s %-20s%n", "Name", "Stock", "Low Stock Level Alert");
-        for (int i = 0; i < lowStockMedications.size(); i++) {
-            Medication med = lowStockMedications.get(i);
-            System.out.printf("%d. %-20s %-10d %-20d%n", 
-                              (i + 1), 
-                              med.getMedicineName(), 
-                              med.getStock(), 
-                              med.getLowStockLevelAlert());
-        }
-
-        Scanner scanner = new Scanner(System.in);
-        for (Medication med : lowStockMedications) {
-            System.out.println("\nApprove replenishment for: " + med.getMedicineName());
-            System.out.println("Current Stock: " + med.getStock());
-            System.out.print("Enter new stock level (or press Enter to skip): ");
-
-            String input = scanner.nextLine().trim();
-            if (!input.isEmpty()) {
-                try {
-                    int newStock = Integer.parseInt(input);
-                    if (newStock <= med.getStock()) {
-                        System.out.println("Error: New stock level must be greater than the current stock.");
-                    } else {
-                        med.setStock(newStock);
-                        System.out.println("Replenishment approved. Stock updated to: " + newStock);
-                    }
-                } catch (NumberFormatException e) {
-                    System.out.println("Invalid input. Skipping replenishment for this medication.");
-                }
-            }
-        }
-
-        // Save updated medication data to file
-        StorageGlobal.MedicationStorage().saveToFile();
-        System.out.println("All approved replenishments have been saved.");
     }
 
 
