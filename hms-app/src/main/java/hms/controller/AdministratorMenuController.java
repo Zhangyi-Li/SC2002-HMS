@@ -14,15 +14,15 @@ public class AdministratorMenuController {
     private final AdminService service;
     private final AppointmentController appointmentController = new AppointmentController();
     private final ReplenishmentController replenishmentController = new ReplenishmentController();
+    private Scanner sc = new Scanner(System.in);
 
     // Constructor to initialize AdminService
     public AdministratorMenuController() {
-        this.service = new AdminService(); // Initialize AdminService
+        this.service = new AdminService(); 
     }
 
     // Method to view and manage hospital staff
     public void viewAndManageStaff() {
-        Scanner scanner = new Scanner(System.in);
         int choice = -1;
 
         // Loop until the user chooses to go back to the Administrator Menu
@@ -36,9 +36,9 @@ public class AdministratorMenuController {
             System.out.print("Enter your choice (1-5): ");
 
             // Check if the input is an integer
-            if (scanner.hasNextInt()) {
-                choice = scanner.nextInt();
-                scanner.nextLine(); // Clear the buffer
+            if (sc.hasNextInt()) {
+                choice = sc.nextInt();
+                sc.nextLine(); // Clear the buffer
                 System.out.println();
 
                 // Handle the user's choice
@@ -54,11 +54,11 @@ public class AdministratorMenuController {
                     }
                     case 2 -> {
                         try {
-                            String name = getInput(scanner, "Enter Name: ");
-                            UserRole role = getUserRole(scanner);
+                            String name = getInput(sc, "Enter Name: ");
+                            UserRole role = getUserRole(sc);
                             String hospitalID = StorageGlobal.StaffStorage().generateHospitalId(role);
-                            String gender = getValidatedGender(scanner);
-                            int age = getIntInput(scanner, "Enter Age: ");
+                            String gender = getValidatedGender(sc);
+                            int age = getIntInput(sc, "Enter Age: ");
 
                             service.addStaff(hospitalID, name, role, gender, age);
                             System.out.println("Staff member added successfully.\n");
@@ -68,11 +68,11 @@ public class AdministratorMenuController {
                     }
                     case 3 -> {
                         try {
-                            String hospitalID = getInput(scanner, "Enter Hospital ID of staff to modify: ");
-                            String newName = getInput(scanner, "Enter New Name: ");
-                            UserRole role = getUserRole(scanner);
-                            String newGender = getInput(scanner, "Enter New Gender: ");
-                            int newAge = getIntInput(scanner, "Enter New Age: ");
+                            String hospitalID = getInput(sc, "Enter Hospital ID of staff to modify: ");
+                            String newName = getInput(sc, "Enter New Name: ");
+                            UserRole role = getUserRole(sc);
+                            String newGender = getInput(sc, "Enter New Gender: ");
+                            int newAge = getIntInput(sc, "Enter New Age: ");
 
                             service.updateStaff(hospitalID, newName, newGender, newAge, role);
                             System.out.println("Staff member updated successfully.\n");
@@ -82,7 +82,7 @@ public class AdministratorMenuController {
                     }
                     case 4 -> {
                         try {
-                            String hospitalID = getInput(scanner, "Enter Hospital ID of staff to remove: ");
+                            String hospitalID = getInput(sc, "Enter Hospital ID of staff to remove: ");
                             Staff staff = StorageGlobal.StaffStorage().fetchUserByHospitalId(hospitalID);
 
                             if (staff == null) {
@@ -96,7 +96,7 @@ public class AdministratorMenuController {
                                 System.out.println("Age: " + staff.getAge());
 
                                 System.out.print("Are you sure you want to remove this staff member? (yes/no): ");
-                                String confirmation = scanner.nextLine().trim().toLowerCase();
+                                String confirmation = sc.nextLine().trim().toLowerCase();
                                 if (confirmation.equals("yes")) {
                                     service.removeStaff(hospitalID);
                                     System.out.println("Staff member removed successfully.\n");
@@ -117,7 +117,7 @@ public class AdministratorMenuController {
                 }
             } else {
                 System.out.println("Invalid input. Please enter a number between 1 and 5.");
-                scanner.next(); // Clear the invalid input
+                sc.next(); // Clear the invalid input
             }
         }
     }
@@ -137,7 +137,6 @@ public class AdministratorMenuController {
     public void viewAndManageInventory() {
     System.out.println("Viewing and Managing Medication Inventory...");
     MedicationController medicationController = new MedicationController();
-    Scanner scanner = new Scanner(System.in);
 
     int choice;
     do {
@@ -148,13 +147,13 @@ public class AdministratorMenuController {
         System.out.println("4. Exit");
         System.out.print("Choose an option: ");
 
-        while (!scanner.hasNextInt()) {
+        while (!sc.hasNextInt()) {
             System.out.println("Invalid input. Please enter a number between 1 and 4.");
             System.out.print("Choose an option: ");
-            scanner.next();
+            sc.next();
         }
-        choice = scanner.nextInt();
-        scanner.nextLine();
+        choice = sc.nextInt();
+        sc.nextLine();
 
         switch (choice) {
             case 1 -> {
@@ -162,7 +161,7 @@ public class AdministratorMenuController {
                     System.out.println("=== Adding a New Medication ===");
 
                     System.out.print("Enter Medication Name: ");
-                    String medicineName = scanner.nextLine().trim();
+                    String medicineName = sc.nextLine().trim();
 
                     // Check if medication already exists
                     if (MedicationController.isDuplicateRecord(medicineName)) {
@@ -171,26 +170,26 @@ public class AdministratorMenuController {
                     }
 
                     System.out.print("Enter Stock: ");
-                    while (!scanner.hasNextInt()) {
+                    while (!sc.hasNextInt()) {
                         System.out.println("Invalid input. Please enter a valid integer for stock.");
-                        scanner.next();
+                        sc.next();
                     }
-                    int stock = scanner.nextInt();
+                    int stock = sc.nextInt();
 
                     int lowStockLevelAlert;
                     do {
                         System.out.print("Enter Low Stock Level Alert (must not exceed stock): ");
-                        while (!scanner.hasNextInt()) {
+                        while (!sc.hasNextInt()) {
                             System.out.println("Invalid input. Please enter a valid integer.");
-                            scanner.next();
+                            sc.next();
                         }
-                        lowStockLevelAlert = scanner.nextInt();
+                        lowStockLevelAlert = sc.nextInt();
 
                         if (lowStockLevelAlert >= stock) {
                             System.out.println("Error: Low Stock Level Alert cannot be higher than Stock. Try again.");
                         }
                     } while (lowStockLevelAlert >= stock);
-                    scanner.nextLine(); // Clear buffer
+                    sc.nextLine(); // Clear buffer
 
                     Medication newMedication = new Medication(medicineName, stock, lowStockLevelAlert);
                     MedicationController.addMedication(newMedication);
@@ -209,7 +208,7 @@ public class AdministratorMenuController {
                     medicationController.displayMedications();
 
                     System.out.print("Enter Medication Name to update: ");
-                    String medicineName = scanner.nextLine().trim();
+                    String medicineName = sc.nextLine().trim();
 
                     // Fetch the existing medication
                     Medication existingMedication = MedicationController.fetchMedicationByName(medicineName);
@@ -226,14 +225,14 @@ public class AdministratorMenuController {
 
                     // Input for new stock
                     System.out.print("Enter New Stock (or press Enter to keep current value): ");
-                    String stockInput = scanner.nextLine().trim();
+                    String stockInput = sc.nextLine().trim();
                     int newStock = stockInput.isEmpty() ? existingMedication.getStock() : Integer.parseInt(stockInput);
 
                     // Input for new low stock level alert
                     int newLowStockLevelAlert;
                     do {
                         System.out.print("Enter New Low Stock Level Alert (or press Enter to keep current value): ");
-                        String lowStockInput = scanner.nextLine().trim();
+                        String lowStockInput = sc.nextLine().trim();
                         newLowStockLevelAlert = lowStockInput.isEmpty()
                                 ? existingMedication.getLowStockLevelAlert()
                                 : Integer.parseInt(lowStockInput);

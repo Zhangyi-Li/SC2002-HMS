@@ -1,6 +1,7 @@
 package storage;
 
 import enums.ReplenishmentStatus;
+import interfaces.IStorage;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.FileReader;
@@ -11,11 +12,12 @@ import java.util.ArrayList;
 import java.util.List;
 import model.Replenishment;
 
-public class ReplenishmentStorage {
+public class ReplenishmentStorage implements IStorage<Replenishment> {
     
-    private static final String REPLENISHMENT_FILE_PATH = "hms-app/src/main/resources/data/replenishment.csv";
-    private static final List<Replenishment> replenishments = new ArrayList<>();
+    private final String REPLENISHMENT_FILE_PATH = "hms-app/src/main/resources/data/replenishment.csv";
+    private final List<Replenishment> replenishments = new ArrayList<>();
 
+    @Override
     public void importData() {
         String absolutePath = Paths.get(REPLENISHMENT_FILE_PATH).toAbsolutePath().toString();
         try (BufferedReader br = new BufferedReader(new FileReader(absolutePath))) {
@@ -39,12 +41,13 @@ public class ReplenishmentStorage {
         }
     }
 
-    public static List<Replenishment> getData() {
+    @Override
+    public List<Replenishment> getData() {
         return replenishments;
     }
 
     // Method to check for duplicate records
-    public static boolean isDuplicateRecord(String ID) {
+    public boolean isDuplicateRecord(String ID) {
         // Check if a replenishment with the same ID
         return replenishments.stream().anyMatch(replenishment ->
             replenishment.getID().equals(ID)
@@ -52,7 +55,7 @@ public class ReplenishmentStorage {
     }
 
     // Method to generate a unique ID
-    public static String generateID() {
+    public String generateID() {
         return String.format("R%03d", replenishments.size() + 1);
     }
 

@@ -1,5 +1,6 @@
 package storage;
 
+import interfaces.IStorage;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.FileReader;
@@ -12,10 +13,11 @@ import java.util.Date;
 import java.util.List;
 import model.user.Patient;
 
-public class PatientStorage{
-    private static final String PATIENT_FILE_PATH = "hms-app/src/main/resources/data/Patient_List.csv";
-    private static final List<Patient> patients = new ArrayList<>();
+public class PatientStorage implements IStorage<Patient> {
+    private final String PATIENT_FILE_PATH = "hms-app/src/main/resources/data/Patient_List.csv";
+    private final List<Patient> patients = new ArrayList<>();
 
+    @Override
     public void importData() {
         String absolutePath = Paths.get(PATIENT_FILE_PATH).toAbsolutePath().toString();
         try (BufferedReader br = new BufferedReader(new FileReader(absolutePath))) {
@@ -45,12 +47,13 @@ public class PatientStorage{
         }
     }
 
-    public static List<Patient> getData() {
+    @Override
+    public List<Patient> getData() {
         return patients;
     }
 
     // Method to check for duplicate records
-    public static boolean isDuplicateRecord(String name, String gender) {
+    public boolean isDuplicateRecord(String name, String gender) {
         // Check if a patient with the same name and gender already exists
         return patients.stream().anyMatch(patient ->
             patient.getName().equalsIgnoreCase(name) &&
@@ -59,7 +62,7 @@ public class PatientStorage{
     }
 
     // Method to generate a unique hospital ID
-    public static String generateHospitalId() {
+    public String generateHospitalId() {
         int id = 1; // Start with ID 1
         while (true) {
             String generatedId = String.format("P1%03d", id); // Format ID as P1XXX
@@ -73,20 +76,19 @@ public class PatientStorage{
     }
 
     // Method to save or update a new patient
-    public static void savePatient(Patient patient) {
+    public void savePatient(Patient patient) {
         if (isDuplicateRecord(patient.getName(), patient.getGender())) {
             patients.replaceAll(operator -> operator.getName().equalsIgnoreCase(patient.getName()) && operator.getGender().equalsIgnoreCase(patient.getGender()) ? patient : operator);
         } else {
             patients.add(patient);
         }
 
-        patients.add(patient); // Add patient to in-memory list
         saveToFile(); // Persist changes to the CSV file
         System.out.println("Patient saved successfully!");
     }
 
     // Method to update patient's password
-    public static void updatePatientPassword(String hospitalId, String newPassword) {
+    public void updatePatientPassword(String hospitalId, String newPassword) {
         patients.stream()
                 .filter(patient -> patient.getHospitalID().equals(hospitalId))
                 .findFirst()
@@ -95,7 +97,7 @@ public class PatientStorage{
     }
 
     // Helper method to persist patients to the CSV file
-    private static void saveToFile() {
+    private void saveToFile() {
         String absolutePath = Paths.get(PATIENT_FILE_PATH).toAbsolutePath().toString();
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(absolutePath))) {
             // Write header to the CSV file
@@ -121,7 +123,7 @@ public class PatientStorage{
     }
 
     // Method to fetch a patient by hospital ID
-    public static Patient fetchUserByHospitalId(String hospitalId) {
+    public Patient fetchUserByHospitalId(String hospitalId) {
         return patients.stream()
                 .filter(Patient -> Patient.getHospitalID().equals(hospitalId))
                 .findFirst()

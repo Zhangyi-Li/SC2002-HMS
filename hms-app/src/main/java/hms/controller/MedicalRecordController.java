@@ -49,6 +49,10 @@ public class MedicalRecordController {
 
     // Method to view patient medical records
     public void viewPatientRecords(String patientID) {
+        viewPatient(StorageGlobal.PatientStorage().getData().stream()
+                .filter(patient -> patient.getHospitalID().equalsIgnoreCase(patientID))
+                .collect(Collectors.toList()));
+
         List <MedicalRecord> medicalRecords = fetchMedicalRecordByPatientID(patientID);
         if (!medicalRecords.isEmpty()) {
             displayMedicalRecords(medicalRecords);

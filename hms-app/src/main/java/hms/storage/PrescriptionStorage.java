@@ -1,6 +1,7 @@
 package storage;
 
 import enums.PrescriptionStatus;
+import interfaces.IStorage;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
@@ -9,18 +10,20 @@ import java.util.ArrayList;
 import java.util.List;
 import model.Prescription;
 
-public class PrescriptionStorage {
-    private static List<Prescription> prescriptions;
-    private static final String APPOINTMENT_OUTCOME_RECORDS_FILE_PATH = "hms-app/src/main/resources/data/prescription.csv";
+public class PrescriptionStorage implements IStorage<Prescription> {
+    private List<Prescription> prescriptions;
+    private final String APPOINTMENT_OUTCOME_RECORDS_FILE_PATH = "hms-app/src/main/resources/data/prescription.csv";
 
     public PrescriptionStorage() {
         prescriptions = new ArrayList<>();
     }
 
-    public static List<Prescription> getData() {
+    @Override
+    public List<Prescription> getData() {
         return prescriptions;
     }
 
+    @Override
     public void importData() {
         String absolutePath = Paths.get(APPOINTMENT_OUTCOME_RECORDS_FILE_PATH).toAbsolutePath().toString();
         try (BufferedReader reader = new BufferedReader(new FileReader(absolutePath))) {
@@ -44,7 +47,7 @@ public class PrescriptionStorage {
     }
 
     // find prescription by appointment id and medicine name
-    public static Prescription findPresciption(Prescription prescription) {
+    public Prescription findPresciption(Prescription prescription) {
         for (Prescription p : prescriptions) {
             if (p.getAppointmentID().equals(prescription.getAppointmentID()) && p.getMedicationName().equals(prescription.getMedicationName())) {
                 return p;
@@ -54,7 +57,7 @@ public class PrescriptionStorage {
         return null;
     }
 
-    public static void addPrescription(Prescription prescription) {
+    public void addPrescription(Prescription prescription) {
         if(findPresciption(prescription) != null) {
             prescriptions.replaceAll(p -> p.getAppointmentID().equals(prescription.getAppointmentID()) &&  p.getMedicationName().equals(prescription.getMedicationName()) ? prescription : p);
         }else{
@@ -63,7 +66,7 @@ public class PrescriptionStorage {
         saveToFile();
     }
 
-    public static void saveToFile(){
+    public void saveToFile(){
         String absolutePath = Paths.get(APPOINTMENT_OUTCOME_RECORDS_FILE_PATH).toAbsolutePath().toString();
         try (java.io.BufferedWriter bw = new java.io.BufferedWriter(new java.io.FileWriter(absolutePath))) {
             // Write header to the CSV file

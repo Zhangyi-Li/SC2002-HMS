@@ -1,5 +1,6 @@
 package storage;
 
+import interfaces.IStorage;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
@@ -8,18 +9,20 @@ import java.util.ArrayList;
 import java.util.List;
 import model.appointment.DoctorSchedule;
 
-public class DoctorScheduleStorage {
-    private static List<DoctorSchedule> doctorSchedules;
-    private static final String DOCTER_SCHEDULE_FILE_PATH = "hms-app/src/main/resources/data/doctorSchedule.csv";
+public class DoctorScheduleStorage implements IStorage<DoctorSchedule> {
+    private List<DoctorSchedule> doctorSchedules;
+    private final String DOCTER_SCHEDULE_FILE_PATH = "hms-app/src/main/resources/data/doctorSchedule.csv";
 
     public DoctorScheduleStorage() {
         doctorSchedules = new ArrayList<>();
     }
 
-    public static List<DoctorSchedule> getData() {
+    @Override
+    public List<DoctorSchedule> getData() {
         return doctorSchedules;
     }
 
+    @Override
     public void importData() {
         String absolutePath = Paths.get(DOCTER_SCHEDULE_FILE_PATH).toAbsolutePath().toString();
         try (BufferedReader reader = new BufferedReader(new FileReader(absolutePath))) {
@@ -39,7 +42,7 @@ public class DoctorScheduleStorage {
         }
     }
 
-    public static void editDoctorSchedule(DoctorSchedule doctorSchedule) {
+    public void editDoctorSchedule(DoctorSchedule doctorSchedule) {
 
         doctorSchedules.removeIf(slot -> slot.getDoctorID().equals(doctorSchedule.getDoctorID()));
         doctorSchedules.add(doctorSchedule);
