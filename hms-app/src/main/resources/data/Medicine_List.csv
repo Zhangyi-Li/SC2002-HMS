@@ -1,5 +1,6 @@
 Medicine Name,Stock,Low Stock Level Alert
-Panedol,200,40
-Antibiotics,150,20
+Panedol,430,40
+Antibiotics,140,20
 Throat Lozenge,50,10
-TEST,100,10
+TEST,200,100
+Drug 1,100,50

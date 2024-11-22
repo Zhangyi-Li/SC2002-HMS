@@ -1,2 +1,5 @@
 ID,Medicine Name,Stock,Status
 R001,Antibiotics,50,APPROVED
+R002,Panedol,50,APPROVED
+R003,Panedol,100,APPROVED
+R004,Panedol,100,APPROVED

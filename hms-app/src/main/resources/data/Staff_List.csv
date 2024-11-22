@@ -4,4 +4,5 @@ D001,PamBeesly,Doctor,Female,42,password
 P001,JimHalpert,Pharmacist,Male,41,password
 D002,DwightSchrute,Doctor,Male,34,password
 D003,AngelaMartin,Doctor,Female,53,password
-P002,PhyllisVance,Pharmacist,Female,23,password
+P002,PhyllisVance,Pharmacist,Male,23,password
+P003,Elias,Pharmacist,Male,30,password

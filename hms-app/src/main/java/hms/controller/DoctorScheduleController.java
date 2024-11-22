@@ -2,7 +2,6 @@ package controller;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import model.appointment.DoctorSchedule;
 import storage.StorageGlobal;
 

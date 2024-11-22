@@ -1,1 +1,3 @@
-Patient ID,Docter ID,Date,Diagnose,Treatment
+Patient ID,Date,Diagnose,Treatment
+P1001,2024-11-20,Heart disease,Milk
+P1001,2024-12-03,Testing,

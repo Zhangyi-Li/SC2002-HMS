@@ -1,5 +1,6 @@
 package storage;
 
+import interfaces.IStorage;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
@@ -11,19 +12,21 @@ import java.util.Date;
 import java.util.List;
 import model.appointment.Appointment;
 
-public class AppointmentStorage  {
-    private static List<Appointment> appointments;
-    private static final String APPOINTMENTS_FILE_PATH = "hms-app/src/main/resources/data/appointments.csv";
-    private static final String absolutePath = Paths.get(APPOINTMENTS_FILE_PATH).toAbsolutePath().toString();
+public class AppointmentStorage implements IStorage<Appointment>  {
+    private List<Appointment> appointments;
+    private final String APPOINTMENTS_FILE_PATH = "hms-app/src/main/resources/data/appointments.csv";
+    private final String absolutePath = Paths.get(APPOINTMENTS_FILE_PATH).toAbsolutePath().toString();
 
     public AppointmentStorage() {
         appointments = new ArrayList<>();
     }
 
-    public static List<Appointment> getData() {
+    @Override
+    public List<Appointment> getData() {
         return appointments;
     }
 
+    @Override
     public void importData() {
         try (BufferedReader reader = new BufferedReader(new FileReader(absolutePath))) {
             String line;
@@ -53,18 +56,18 @@ public class AppointmentStorage  {
             }
         }
     
-    public static void addAppointment(Appointment appointment) {
+    public void addAppointment(Appointment appointment) {
             appointments.add(appointment);
             saveToFile();
         }
 
-    public static void updateAppointment(Appointment appointment) {
+    public void updateAppointment(Appointment appointment) {
         // Update appointment in list
         appointments.replaceAll(a -> a.getAppointmentID().equals(appointment.getAppointmentID()) ? appointment : a);
         saveToFile();
     }
 
-    public static void saveToFile() {
+    public void saveToFile() {
         try (java.io.BufferedWriter bw = new java.io.BufferedWriter(new java.io.FileWriter(absolutePath))) {
             // Write header to the CSV file
             bw.write("AppointmentID,PatientID,DoctorID,Appointment Date,Appointment Time,Appointment Status,Service Type,Consultation Notes");

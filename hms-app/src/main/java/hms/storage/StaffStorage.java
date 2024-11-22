@@ -1,6 +1,7 @@
 package storage;
 
 import enums.UserRole;
+import interfaces.IStorage;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.FileReader;
@@ -11,11 +12,12 @@ import java.util.ArrayList;
 import java.util.List;
 import model.user.Staff;
 
-public class StaffStorage {
+public class StaffStorage implements IStorage<Staff> {
     
-    private static final String STAFF_FILE_PATH = "hms-app/src/main/resources/data/Staff_List.csv";
-    private static final List<Staff> staffs = new ArrayList<>();
+    private final String STAFF_FILE_PATH = "hms-app/src/main/resources/data/Staff_List.csv";
+    private final List<Staff> staffs = new ArrayList<>();
 
+    @Override
     public void importData() {
         String absolutePath = Paths.get(STAFF_FILE_PATH).toAbsolutePath().toString();
         try (BufferedReader br = new BufferedReader(new FileReader(absolutePath))) {
@@ -42,12 +44,13 @@ public class StaffStorage {
         }
     }
 
-    public static List<Staff> getData() {
+    @Override
+    public List<Staff> getData() {
         return staffs;
     }
 
     // Method to check for duplicate records
-    public static boolean isDuplicateRecord(String name, int age) {
+    public boolean isDuplicateRecord(String name, int age) {
         // Check if a staff with the same name and gender already exists
         return staffs.stream().anyMatch(staff ->
             staff.getName().equalsIgnoreCase(name) &&
@@ -56,7 +59,7 @@ public class StaffStorage {
     }
 
     // Method to generate a unique hospital ID
-    public static String generateHospitalId(UserRole role) {
+    public String generateHospitalId(UserRole role) {
         String prefix;
         switch (role) {
             case Administrator -> prefix = "A";
@@ -83,14 +86,14 @@ public class StaffStorage {
     }
 
     // Method to save a new staff
-    public static void saveStaff(Staff staff) {
+    public void saveStaff(Staff staff) {
         staffs.add(staff); // Add staff to in-memory list
         saveToFile(); // Persist changes to the CSV file
         System.out.println("Staff saved successfully!");
     }
 
     // Method to update staff's password
-    public static void updateStaffPassword(String hospitalId, String newPassword) {
+    public void updateStaffPassword(String hospitalId, String newPassword) {
         staffs.stream()
                 .filter(staff -> staff.getHospitalID().equals(hospitalId))
                 .findFirst()
@@ -99,7 +102,7 @@ public class StaffStorage {
     }
 
     // Method to update an existing staff
-    public static void updateStaff(Staff staff) {
+    public void updateStaff(Staff staff) {
         Staff existingStaff = staffs.stream()
                 .filter(s -> s.getHospitalID().equals(staff.getHospitalID()))
                 .findFirst()
@@ -118,14 +121,14 @@ public class StaffStorage {
     }
 
     // Method to remove a staff
-    public static void removeStaff(Staff staff) {
+    public void removeStaff(Staff staff) {
         staffs.remove(staff); // Remove staff from in-memory list
         saveToFile(); // Persist changes to the CSV file
         System.out.println("Staff removed successfully!");
     }
 
     // Helper method to persist staffs to the CSV file
-    private static void saveToFile() {
+    private void saveToFile() {
         String absolutePath = Paths.get(STAFF_FILE_PATH).toAbsolutePath().toString();
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(absolutePath))) {
             // Write header to the CSV file
@@ -150,7 +153,7 @@ public class StaffStorage {
     }
 
     // Method to fetch a staff by hospital ID
-    public static Staff fetchUserByHospitalId(String hospitalId) {
+    public Staff fetchUserByHospitalId(String hospitalId) {
         return staffs.stream()
                 .filter(staff -> staff.getHospitalID().equals(hospitalId))
                 .findFirst()

@@ -1,13 +1,14 @@
 package storage;
 
+import interfaces.IStorage;
 import java.io.*;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import model.Medication;
 
-public class MedicationStorage {
-    private static final String MEDICATION_FILE_PATH = "hms-app/src/main/resources/data/Medicine_List.csv";
+public class MedicationStorage implements IStorage<Medication> {
+    private final String MEDICATION_FILE_PATH = "hms-app/src/main/resources/data/Medicine_List.csv";
     private final List<Medication> medicineList = new ArrayList<>();
 
     public void importData() {
@@ -35,6 +36,7 @@ public class MedicationStorage {
         }
     }
 
+    @Override
     public List<Medication> getData() {
         return medicineList;
     }

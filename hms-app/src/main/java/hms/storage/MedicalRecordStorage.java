@@ -1,5 +1,6 @@
 package storage;
 
+import interfaces.IStorage;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
@@ -10,10 +11,11 @@ import java.util.Date;
 import java.util.List;
 import model.MedicalRecord;
 
-public class MedicalRecordStorage {
-    private static final String MEDICAL_RECORD_FILE_PATH = "hms-app/src/main/resources/data/Medical_Record.csv";
+public class MedicalRecordStorage implements IStorage<MedicalRecord> {
+    private final String MEDICAL_RECORD_FILE_PATH = "hms-app/src/main/resources/data/Medical_Record.csv";
     private final List<MedicalRecord> medicalRecords = new ArrayList<>();
         
+    @Override
     public void importData() {
         String absolutePath = Paths.get(MEDICAL_RECORD_FILE_PATH).toAbsolutePath().toString();
         try (BufferedReader br = new BufferedReader(new FileReader(absolutePath))) {
@@ -41,6 +43,7 @@ public class MedicalRecordStorage {
         }
     }
 
+    @Override
     public List<MedicalRecord> getData() {
         return medicalRecords;
     }

@@ -7,12 +7,11 @@ import java.util.Scanner;
 import java.util.function.Predicate;
 import java.util.regex.Pattern;
 import model.user.Patient;
+import model.user.Staff;
 import model.user.User;
 import services.AuthService; // For handling user-related logic
-import storage.PatientStorage;
-import storage.StaffStorage;
-import storage.StorageGlobal; // Import the resetPassword service class
-import view.LoginView; // Import the StaffStorage class
+import storage.StorageGlobal;
+import view.LoginView;
 
 /**
  * Controller class to handle authentication, registration, and password reset.
@@ -20,16 +19,11 @@ import view.LoginView; // Import the StaffStorage class
 public class AuthController {
 
     private static AuthService authService = new AuthService(); // Instance of AuthService for authentication
-    private static final LoginView loginView = new LoginView(); // Instance of LoginView for user interaction
-    private static final Scanner sc;
-
-    static {
-        sc = new Scanner(System.in);
-    }
+    private final LoginView loginView = new LoginView(); // Instance of LoginView for user interaction
+    private final Scanner sc = new Scanner(System.in); // Scanner object for user input
 
     public AuthController() {
     }
-
     /**
      * Handles the login flow for the application.
      *
@@ -109,14 +103,14 @@ public class AuthController {
                             return input.contains("@") || input.equalsIgnoreCase("NA");
                         }, "Invalid email format. Please enter a valid email or 'NA'.");
                         if (email != null) {
-                            if (PatientStorage.isDuplicateRecord(fullName, gender)) {
+                            if (StorageGlobal.PatientStorage().isDuplicateRecord(fullName, gender)) {
                                 System.out.println("The user is already registered. Returning to the main menu...");
                             } else {
-                                String hospitalId = PatientStorage.generateHospitalId();
+                                String hospitalId = StorageGlobal.PatientStorage().generateHospitalId();
                                 String defaultPassword = "password";
                                 Date dob = java.sql.Date.valueOf(dateOfBirth);
                                 Patient patient = new Patient(hospitalId, fullName, defaultPassword, gender, dob, bloodType, email);
-                                PatientStorage.savePatient(patient);
+                                StorageGlobal.PatientStorage().savePatient(patient);
                                 System.out.println("Registration successful!");
                                 System.out.println("Your Hospital ID: " + hospitalId);
                                 System.out.println("Your default password is: " + defaultPassword);
@@ -212,13 +206,12 @@ public class AuthController {
         return null;
     }
 
-        public void startResetPassword() {
+    public void startResetPassword() {
         System.out.println("Welcome to the HMS Password Reset Service");
         // Prompt the user for selection of user type
         System.out.println("Select User Type:");
         System.out.println("1. Patient");
         System.out.println("2. Staff");
-        System.out.print("Enter your choice (1-2): ");
         String userTypeChoiceStr = this.getInputWithRetry("Enter your choice (1-2):", (input) -> {
             return input.matches("[1-2]");
         }, "Invalid input. Please enter a number between 1 and 2.");
@@ -229,17 +222,23 @@ public class AuthController {
         }, "Hospital ID cannot be empty. Please enter a valid Hospital ID.");
         if (hospitalId != null) {
 
-            User user = null;
+            Patient patient = null;
+            Staff staff = null;
             if (userTypeChoice == 1) {
-                user= PatientStorage.fetchUserByHospitalId(hospitalId);
+                patient= StorageGlobal.PatientStorage().fetchUserByHospitalId(hospitalId);
             } else if (userTypeChoice == 2) {
-                user = StaffStorage.fetchUserByHospitalId(hospitalId);
+                staff = StorageGlobal.StaffStorage().fetchUserByHospitalId(hospitalId);
             } 
 
-            if (user == null ) {
+            if ((patient == null && userTypeChoice == 1)|| (staff == null && userTypeChoice == 2)) {
                 System.out.println("Hospital ID not found. Returning to the main menu...");
             } else {
-                String id_name = user.getName();
+                String id_name;
+                if (userTypeChoice == 1) {
+                    id_name = patient.getName();
+                } else {
+                    id_name = staff.getName();
+                }   
                 String fullName = this.getInputWithRetry("Please enter your full name for verification:", (input) -> {
                 return input.equalsIgnoreCase(id_name);
                 }, "Invalid or mismatched full name. Please try again.");
@@ -248,9 +247,9 @@ public class AuthController {
                 String newPassword = this.getNewPassword();
                 if (newPassword != null) {
                     if (userTypeChoice == 1) {
-                        PatientStorage.updatePatientPassword(hospitalId, newPassword);
+                        StorageGlobal.PatientStorage().updatePatientPassword(hospitalId, newPassword);
                     } else if (userTypeChoice == 2) {
-                        StaffStorage.updateStaffPassword(hospitalId, newPassword);
+                        StorageGlobal.StaffStorage().updateStaffPassword(hospitalId, newPassword);
                     }
                     System.out.println("Your password has been reset successfully.");
                     System.out.println("You can now log in with your new password.");
